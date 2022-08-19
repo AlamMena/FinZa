@@ -84,7 +84,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="grid grid-cols-12 space-y-8 mt-6 gap-x-8 space-x-12 w-full">
+      <div className="grid grid-cols-12 space-y-8 mt-6 lg:gap-x-8 lg:space-x-12 w-full">
         <div className="col-span-10 md:col-span-12 lg:col-span-7">
           <div className="flex justify-between items-center mt-8 mb-2">
             <h2 className="font-bold text-lg">My Cards</h2>
@@ -93,7 +93,7 @@ export default function Home() {
             </span>
           </div>
           {/* body */}
-          <div className="grid grid-cols-12 gap-x-8">
+          <div className="grid grid-cols-12 lg:gap-x-8">
             <div className="col-span-12 md:col-span-6 mt-4">
               <Card />
             </div>
@@ -112,7 +112,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className=" col-span-10 md:col-span-12 lg:col-span-5">
+        <div className="col-span-12 lg:col-span-5">
           <div className="flex justify-between items-center">
             <div className="space-x-4">
               <span className="bg-purple-300 py-2 px-4 rounded-full">
