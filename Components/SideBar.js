@@ -21,11 +21,10 @@ const SideBarItem = ({ Icon, text, active }) => {
 };
 export default function SideBar() {
   return (
-    <div className="hidden md:fixed md:flex flex-col h-screen  w-72 px-8 py-2">
+    <div className="sm:hidden md:fixed md:flex flex-col h-screen w-72 px-8 py-2">
       {/* header */}
       <h1 className="font-bold text-3xl px-4 py-8">FinzA</h1>
      
-
       {/* menu */}
       <div className="flex flex-col max-w-sm space-y-4 mt-4 ">
         <SideBarItem Icon={BsFillGridFill} text="Dashboard" active />
