@@ -45,7 +45,6 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-    <div className="w-96 h-full bg-black text-white">Helloo</div>
 
       {/* header */}
       <div className="flex justify-between w-full">
