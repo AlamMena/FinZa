@@ -1,0 +1,37 @@
+import CategoryCard from "../Components/CategoryCard";
+import Transaction from "../Components/Transaction";
+import TransactionHistory from "../Components/TransactionHistory";
+
+export default function Categories() {
+  return (
+    <div className=" grid grid-cols-12  lg:gap-x-20">
+      <div className="col-span-12">
+        <h1 className="main_header_page my-4">Categories</h1>
+      </div>
+      <div className="col-span-12 md:col-span-3 lg:col-span-3 space-y-5">
+        <CategoryCard name="Food" description="category of food" />
+        <CategoryCard name="Food" description="category of food" />
+        <CategoryCard name="Food" description="category of food" />
+        <CategoryCard name="Food" description="category of food" />
+      </div>
+      <div className="col-span-12 md:col-span-6 lg:my-0 my-8">
+        <div className="flex space-x-6">
+          <h2 className="main_header text-purple-400">History</h2>
+          <h2 className="main_header text-neutral-400">Upcoming</h2>
+        </div>
+        <hr className=" w-full h-2 my-4" />
+        <h1 className="font-semibold my-6 text-neutral-400">13 Sep, 2020</h1>
+        <TransactionHistory />
+
+        <h1 className="font-semibold my-6 text-neutral-400">13 Sep, 2020</h1>
+        <div className="space-y-8">
+
+          <TransactionHistory />
+          <TransactionHistory />
+          <TransactionHistory />
+          <TransactionHistory />
+        </div>
+      </div>
+    </div>
+  );
+}
