@@ -1,4 +1,6 @@
 import SideBar from "../Components/SideBar";
+import "../styles/globals.css";
+
 function MyApp({ Component, pageProps }) {
   return (
     <div className="flex w-full ">

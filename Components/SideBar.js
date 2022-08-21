@@ -5,6 +5,7 @@ import {
   BsFillWalletFill,
   BsFillGridFill,
 } from "react-icons/bs";
+import "../styles/globals.css";
 
 const SideBarItem = ({ Icon, text, active }) => {
   return (
