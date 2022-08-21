@@ -3,8 +3,7 @@ module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
-    "./Components/Card.js",
-    "./Components/SideBar.js",
+    "./Components/*.js",
   ],
   theme: {
     extend: {},
