@@ -3,9 +3,6 @@ import SideBar from "../Components/SideBar";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
-  useEffect(() => {
-    import("tw-elements");
-  }, []);
   return (
     <div className="flex w-full ">
       <SideBar />
