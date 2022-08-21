@@ -11,7 +11,6 @@ import Transaction from "../Components/Transaction";
 import TransactionChart from "../Components/TransactionChart";
 import TransactionHistory from "../Components/TransactionHistory";
 import { useState } from "react";
-import SideBar from "../Components/SideBar";
 
 export default function Home() {
   const [mode, setMode] = useState("light");
@@ -43,12 +42,10 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-      <SideBar />
-
       {/* header */}
       <div className="flex justify-between w-full">
         <div className="flex space-x-2 items-center">
-          <h1 className="font-bold text-3xl bg-green-600">Hello, Jhon</h1>
+          <h1 className="font-bold text-3xl">Hello, Jhon</h1>
           <FaHandPeace className=" text-yellow-400 text-lg" />
         </div>
         <div className="flex items-center">
