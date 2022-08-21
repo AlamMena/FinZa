@@ -45,7 +45,7 @@ export default function Home() {
       {/* header */}
       <div className="flex justify-between w-full">
         <div className="flex space-x-2 items-center">
-          <h1 className="font-bold text-3xl bg-green">Hello, Jhon</h1>
+          <h1 className="font-bold text-3xl bg-green-600">Hello, Jhon</h1>
           <FaHandPeace className=" text-yellow-400 text-lg" />
         </div>
         <div className="flex items-center">
