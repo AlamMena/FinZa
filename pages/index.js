@@ -1,6 +1,3 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import { FaHandPeace } from "react-icons/fa";
 import {
   BsSearch,
@@ -45,7 +42,6 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-
       {/* header */}
       <div className="flex justify-between w-full">
         <div className="flex space-x-2 items-center">
@@ -62,9 +58,7 @@ export default function Home() {
           </div>
           <BsBell className="mx-2 text-neutral-500" />
           <FcBusinessman className="text-3xl mx-2" />
-          <label
-            className="inline-flex relative items-center cursor-pointer"
-          >
+          <label className="inline-flex relative items-center cursor-pointer">
             <input
               onClick={() => {
                 toggleDarkMode();
@@ -99,7 +93,7 @@ export default function Home() {
               <Card />
             </div>
             <div className="col-span-12  md:col-span-6 mt-4">
-              <Card active/>
+              <Card active />
             </div>
           </div>
 
