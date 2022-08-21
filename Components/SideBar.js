@@ -9,10 +9,8 @@ import {
 const SideBarItem = ({ Icon, text, active }) => {
   return (
     <div
-      className={`flex justify-left items-center space-x-4 py-3 px-4 ${
-        active && "bg-purple-300 rounded-xl"
-      }
-    hover:bg-purple-300 rounded-xl cursor-pointer transition-all ease-in-out duration-200`}
+      className="flex justify-left items-center space-x-4 py-3 px-4 bg-purple-300 rounded-xl
+    hover:bg-purple-300 cursor-pointer transition-all ease-in-out duration-200"
     >
       <Icon />
       <p>{text}</p>
@@ -21,12 +19,12 @@ const SideBarItem = ({ Icon, text, active }) => {
 };
 export default function SideBar() {
   return (
-    <div className="sm:hidden md:fixed md:flex flex-col h-screen w-72 px-8 py-2">
+    <div className="hidden md:fixed md:flex flex-col h-screen w-72 px-8 py-2">
       {/* header */}
       <h1 className="font-bold text-3xl px-4 py-8">FinzA</h1>
-     
+
       {/* menu */}
-      <div className="flex flex-col max-w-sm space-y-4 mt-4 ">
+      <div className="flex flex-col max-w-sm space-y-4 mt-4">
         <SideBarItem Icon={BsFillGridFill} text="Dashboard" active />
         <SideBarItem Icon={BsFillFileBarGraphFill} text="Statics" />
         <SideBarItem Icon={BsFillWalletFill} text="My Wallet" />
