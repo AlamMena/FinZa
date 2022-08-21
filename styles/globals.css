@@ -18,33 +18,3 @@ a {
 * {
   box-sizing: border-box;
 }
-
-.row{
-  @apply px-8 text-left 
-}
-
-.main_header_page{
-  @apply font-bold text-3xl
-}
-
-.main_header{
-  @apply font-bold text-xl
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-
-}
-:root, :root.light {
-  color-scheme: light;
-}
-
-:root.dark {
-  color-scheme: dark;
-}
-
-html{
- color-scheme: var(color-scheme);
-}
