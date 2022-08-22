@@ -1,9 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import { connectToDatabase } from "../Database/Database";
+import { client } from "../Database/Database";
 
 export default async function handler(req, res) {
-  const { db } = await connectToDatabase();
+  const connection = await client.connect();
+  console.log(connection)
   try {
     const categories = await db
       .collection("categories")

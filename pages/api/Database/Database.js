@@ -1,54 +1,5 @@
-import { Db, MongoClient } from "mongodb";
+import { MongoClient, ServerApiVersion } from 'mongodb';
+const uri = "mongodb+srv://Alam:Alam2701@cluster0.cf05i1x.mongodb.net/?retryWrites=true&w=majority";
 
-const MONGODB_URI =
-  "mongodb+srv://Alam:Alam2701@cluster0.cf05i1x.mongodb.net/?retryWrites=true&w=majority";
-const MONGODB_DB = "FinZa";
+export const client = new MongoClient(uri);
 
-let cachedClient;
-let cachedDb;
-
-export async function connectToDatabase() {
-  try {
-    // check the cached.
-    if (cachedClient && cachedDb) {
-      // load from cache
-      return {
-        client: cachedClient,
-        db: cachedDb,
-      };
-    }
-
-    // set the connection options
-    const opts = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    };
-
-    // check the MongoDB URI
-    if (!MONGODB_URI) {
-      throw new Error("Define the MONGODB_URI environmental variable");
-    }
-    // check the MongoDB DB
-    if (!MONGODB_DB) {
-      throw new Error("Define the MONGODB_DB environmental variable");
-    }
-
-    // Connect to cluster
-    let client = new MongoClient(MONGODB_URI);
-    await client.connect();
-    let db = client.db(MONGODB_DB);
-
-    // set cache
-    cachedClient = client;
-    cachedDb = db;
-
-    console.log("connected");
-
-    return {
-      client: cachedClient,
-      db: cachedDb,
-    };
-  } catch (error) {
-    console.log(error);
-  }
-}

@@ -14,7 +14,7 @@ export default function CategoriesList() {
   return (
     <div className="w-full h-72">
       <DataGrid
-        rows={categories.data}
+        rows={categories.isLoading ? categories.data : [{id:'1'}]}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}

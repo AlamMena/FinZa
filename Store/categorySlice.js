@@ -19,7 +19,7 @@ const categorySlice = createSlice({
           name: category.name,
         };
       });
-      return { isLoadind: false, data: parsedList };
+      return { isLoadind: true, data: parsedList };
     },
   },
 });

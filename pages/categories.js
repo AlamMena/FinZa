@@ -16,14 +16,26 @@ export default function Categories() {
       setError(error);
     }
   };
+  
 
+  const upsertCategoriesAsync = async (data) =>{
+    try {
+     const response =  await axios.post("/api/categories/upsert",data);
+     return response;
+    } catch (error) {
+      setError(error);
+      return error;
+    }
+  }
   useEffect(() => {
     getCategoriesAsync();
   }, []);
 
   return (
     <div>
-      <CategoryFrom />
+      <CategoryFrom 
+       onSave={upsertCategoriesAsync}
+      />
       <CategoriesList />
     </div>
 
