@@ -6,6 +6,7 @@ export default async function handler(req, res) {
   const connection = await client.connect();
   console.log(connection)
   try {
+    const db = client.db
     const categories = await db
       .collection("categories")
       .find()
