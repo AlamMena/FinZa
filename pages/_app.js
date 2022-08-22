@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import SideBar from "../Components/SideBar";
-import { document } from "next/document";
 import { Provider } from "react-redux";
 import { store } from "../Store/store";
 import "../styles/globals.css";
