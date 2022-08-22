@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Alert, Button, Snackbar } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,12 @@ export default function CategoriesList({ setFormOpen, setFormData }) {
   // confirm dialog state
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState();
+
+  const [alert, setAlert] = useState(false);
+  const [alertParams, setAlertParams] = useState({
+    severity: "success",
+    title: "",
+  });
 
   const dispatch = useDispatch();
   const columns = [
@@ -84,9 +90,31 @@ export default function CategoriesList({ setFormOpen, setFormData }) {
         onCancel={() => setConfirmOpen(false)}
         onConfirm={() => {
           setConfirmOpen(false);
-          dispatch(deleteCategory(itemToDelete));
+          try {
+            dispatch(deleteCategory(itemToDelete));
+            setAlertParams({
+              severity: "success",
+              title: "category deleted successfully",
+            });
+            setAlert(true);
+            throw new Excetion();
+          } catch (error) {
+            setAlertParams({
+              severity: "error",
+              title: "Oops!, something went wrong, try later",
+            });
+            setAlert(true);
+          }
         }}
       />
+      <Snackbar
+        open={alert}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        autoHideDuration={2000}
+        onClose={() => setAlert(false)}
+      >
+        <Alert severity={alertParams.severity}>{alertParams.title}</Alert>
+      </Snackbar>
     </div>
   );
 }
