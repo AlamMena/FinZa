@@ -125,8 +125,8 @@ export default function CategoriesList({ setFormOpen, setFormData, data }) {
 
   const CategoryRow = () => {
     return (
-      <tr>
-        <td>
+      <TableRow>
+        <TableCell>
           {" "}
           <div className="flex items-center space-x-4">
             <div className="bg-black p-2 rounded-full">
@@ -134,17 +134,17 @@ export default function CategoriesList({ setFormOpen, setFormData, data }) {
             </div>
             <span className="font-semibold text-xs">Grocery shop</span>
           </div>
-        </td>
-        <td>
+        </TableCell>
+        <TableCell>
           <span className="font-semibold text-xs opacity-40">Apr, 06 2022</span>
-        </td>
-        <td align="right">
+        </TableCell>
+        <TableCell align="right">
           <span className="flex font-semibold text-xs text-green-500 space-x-2">
             <span>$5,000</span>
             <BsArrowUpCircleFill />
           </span>
-        </td>
-        <td>
+        </TableCell>
+        <TableCell>
           <div className="flex space-x-4">
             <a
               onClick={() => handleOnClickEdit(cells.row)}
@@ -159,8 +159,8 @@ export default function CategoriesList({ setFormOpen, setFormData, data }) {
               <BsTrash />
             </a>
           </div>
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   };
   return (
@@ -175,17 +175,17 @@ export default function CategoriesList({ setFormOpen, setFormData, data }) {
           loading={false}
         /> */}
 
-        <table>
-          <thead>
-            <tr>
-              <td>Name</td>
-              <td>Last Transaction Date</td>
-              <td>Balance</td>
-              <td>Actions</td>
-            </tr>
-          </thead>
-          <tbody>{data && data.map((item) => <CategoryRow />)}</tbody>
-        </table>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Last Transaction Date</TableCell>
+              <TableCell>Balance</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>{data && data.map((item) => <CategoryRow />)}</TableBody>
+        </Table>
       </div>
       <ConfirmDialog
         title="Are you sure?"

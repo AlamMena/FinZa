@@ -55,6 +55,8 @@ a {
   @apply font-bold text-3xl;
 }
 
+
+
 .main_header {
   @apply font-bold text-xl;
 }
