@@ -1,10 +1,23 @@
-import { useEffect } from "react";
-import SideBar from "../Components/SideBar";
+import { useEffect, useState } from "react";
+import SideBar from "../components/menu/sideBar";
 import { Provider } from "react-redux";
 import { store } from "../Store/store";
 import "../styles/globals.css";
 import createCache from "@emotion/cache";
-import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
+import {
+  createTheme,
+  StyledEngineProvider,
+  ThemeProvider,
+} from "@mui/material/styles";
+import { FaHandPeace } from "react-icons/fa";
+import {
+  BsBell,
+  BsFillMoonFill,
+  BsFillSunFill,
+  BsSearch,
+} from "react-icons/bs";
+import { FcBusinessman } from "react-icons/fc";
+import TopBar from "../components/menu/topBar";
 
 function MyApp({ Component, pageProps }) {
   const cache = createCache({
@@ -12,6 +25,23 @@ function MyApp({ Component, pageProps }) {
     prepend: true,
   });
 
+  const customTheme = createTheme({
+    typography: {
+      fontFamily: ["Varela round", "sans-serif"].join(","),
+    },
+    components: {
+      MuiContainer: {
+        styleOverrides: {
+          root: {
+            border: "8px solid black",
+            width: 80,
+            height: 80,
+            borderRadius: 18,
+          },
+        },
+      },
+    },
+  });
   // const theme = createTheme({
   //   components: {
   //     MuiPopover: {
@@ -29,14 +59,27 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <Provider store={store}>
-      <StyledEngineProvider injectFirst>
-        <div className="flex w-full ">
-          <SideBar />
-          <div className="lg:ml-64 md:ml-64 px-8 md:px-10 py-8 w-full">
-            <Component {...pageProps} />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap"
+        rel="stylesheet"
+      />
+      <ThemeProvider theme={customTheme}>
+        <StyledEngineProvider injectFirst>
+          <div className="flex w-full ">
+            <SideBar />
+            <div className="lg:ml-72 md:ml-72 px-8 md:px-10 py-8 w-full  space-y-2 ">
+              <div className="mb-8">
+                <TopBar />
+              </div>
+              <div>
+                <Component {...pageProps} />
+              </div>
+            </div>
           </div>
-        </div>
-      </StyledEngineProvider>
+        </StyledEngineProvider>
+      </ThemeProvider>
     </Provider>
   );
 }
