@@ -1,26 +1,34 @@
 import {
   Alert,
   Button,
+  InputAdornment,
   Snackbar,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
+  TextField,
 } from "@mui/material";
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import { useState } from "react";
 import {
   BsArrow90DegUp,
+  BsArrowDown,
   BsArrowUp,
   BsArrowUpCircleFill,
   BsArrowUpRight,
   BsBank,
   BsFillArrowUpRightSquareFill,
   BsPen,
+  BsPlus,
+  BsPlusSquareFill,
+  BsSearch,
+  BsSortDown,
   BsThreeDotsVertical,
   BsTrash,
 } from "react-icons/bs";
+import { formatCurrency } from "../../Utils/utils";
 import ConfirmDialog from "../globals/confirmDialog";
 
 export default function CategoriesList({ setFormOpen, setFormData, data }) {
@@ -49,43 +57,63 @@ export default function CategoriesList({ setFormOpen, setFormData, data }) {
   const columns = [
     {
       field: "id",
-      width: 50,
+      width: 100,
       headerName: "Id",
     },
     {
       fiels: "Image",
-      width: 200,
+      flex: 1,
+      minWidth: 200,
       headerName: "Name",
       renderCell: (cells) => {
         return (
           <div className="flex space-x-4 items-center">
-            <img
-              className=" rounded-xl w-10 h-10"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXQw_lYmrP6EnN8mHsBmJfrP4e6E9JW6An2A&usqp=CAU"
-            />
-            <span className="font-semibold">{cells.row.name}</span>
+            <div className="bg-black p-3 rounded-full">
+              <BsBank className="text-sm text-white" />
+            </div>
+            <span className="font-semibold">{cells.row.name} Amazon </span>
           </div>
         );
       },
     },
 
     {
-      field: "amount",
-      width: 120,
-      headerName: "Total",
+      field: "balance",
+      headerName: "Balance",
+      renderCell: (cells) => {
+        return formatCurrency(cells.row.balance);
+      },
     },
     {
-      field: "type",
-      width: 120,
-      headerName: "Type",
+      field: "profit",
+      headerName: "Profit",
+      renderCell: (cells) => {
+        return (
+          <span className="text-green-400">
+            {formatCurrency(cells.row.profit)}{" "}
+          </span>
+        );
+      },
+    },
+    {
+      field: "loss",
+      headerName: "Loss",
+      renderCell: (cells) => {
+        return (
+          <span className="text-red-400">
+            {formatCurrency(cells.row.loss)}{" "}
+          </span>
+        );
+      },
     },
 
     {
       field: "Actions",
       sortable: false,
+      align: "end",
       renderCell: (cells) => {
         return (
-          <div className="flex space-x-4">
+          <div className="flex space-x-4 justify-end mx-2">
             <a
               onClick={() => handleOnClickEdit(cells.row)}
               className="text-purple-600 cursor-pointer"
@@ -123,69 +151,99 @@ export default function CategoriesList({ setFormOpen, setFormData, data }) {
   //   }
   // };
 
-  const CategoryRow = () => {
+  // const CategoryRow = () => {
+  //   return (
+  //     <TableRow className=" bg-neutral-100 rounded-2xl my-2">
+  //       <TableCell className=" rounded-l-3xl">
+  //         {" "}
+  //         <div className="flex items-center space-x-4">
+  //           <div className="bg-black p-2 rounded-full">
+  //             <BsBank className="text-xs text-white" />
+  //           </div>
+  //           <span className="font-semibold text-xs">Grocery shop</span>
+  //         </div>
+  //       </TableCell>
+  //       <TableCell>
+  //         <span className="font-semibold text-xs opacity-40">Apr, 06 2022</span>
+  //       </TableCell>
+  //       <TableCell align="right">
+  //         <span className="flex font-semibold text-xs text-green-500 space-x-2">
+  //           <span>$5,000</span>
+  //           <BsArrowUpCircleFill />
+  //         </span>
+  //       </TableCell>
+  //       <TableCell className=" rounded-r-3xl border-spacing-8">
+  //         <div className="flex space-x-4">
+  //           <a
+  //             onClick={() => handleOnClickEdit(cells.row)}
+  //             className="text-purple-600 cursor-pointer"
+  //           >
+  //             <BsPen />
+  //           </a>
+  //           <a
+  //             onClick={() => handleOnClickDelete(cells.row)}
+  //             className="text-red-500 cursor-pointer"
+  //           >
+  //             <BsTrash />
+  //           </a>
+  //         </div>
+  //       </TableCell>
+  //     </TableRow>
+  //   );
+  // };
+
+  const SearchInput = () => {
     return (
-      <TableRow>
-        <TableCell>
-          {" "}
-          <div className="flex items-center space-x-4">
-            <div className="bg-black p-2 rounded-full">
-              <BsBank className="text-xs text-white" />
-            </div>
-            <span className="font-semibold text-xs">Grocery shop</span>
-          </div>
-        </TableCell>
-        <TableCell>
-          <span className="font-semibold text-xs opacity-40">Apr, 06 2022</span>
-        </TableCell>
-        <TableCell align="right">
-          <span className="flex font-semibold text-xs text-green-500 space-x-2">
-            <span>$5,000</span>
-            <BsArrowUpCircleFill />
-          </span>
-        </TableCell>
-        <TableCell>
-          <div className="flex space-x-4">
-            <a
-              onClick={() => handleOnClickEdit(cells.row)}
-              className="text-purple-600 cursor-pointer"
-            >
-              <BsPen />
-            </a>
-            <a
-              onClick={() => handleOnClickDelete(cells.row)}
-              className="text-red-500 cursor-pointer"
-            >
-              <BsTrash />
-            </a>
-          </div>
-        </TableCell>
-      </TableRow>
+      <div className="flex p-4">
+        <TextField
+          id="standard-basic"
+          size="small"
+          fullWidth
+          placeholder="search..."
+          className="mx-4"
+          variant="outlined"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <BsSearch />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </div>
     );
   };
   return (
     <div className="w-full">
-      <div className="w-full h-full border-gray-50 border-2 p-2 rounded-xl">
-        <h1 className="font-semibold px-4 py-2">Categories</h1>
-        {/* <DataGrid
+      <div className="w-full h-96 shadow-md border-gray-100 rounded-xl">
+        <DataGrid
+          className="rounded-xl"
           rows={data}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
           loading={false}
-        /> */}
+          components={{ Toolbar: SearchInput }}
+        />
 
-        <Table>
+        {/* <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Last Transaction Date</TableCell>
-              <TableCell>Balance</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell className=" font-semibold">Name</TableCell>
+              <TableCell className=" font-semibold">
+                Last Transaction Date
+              </TableCell>
+              <TableCell className=" font-semibold">Balance</TableCell>
+              <TableCell className=" font-semibold">Actions</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>{data && data.map((item) => <CategoryRow />)}</TableBody>
-        </Table>
+          <TableBody>
+            {data &&
+              data.map((item) => (
+                <CategoryRow className="bg-blue-100 border-2 border-black" />
+              ))}
+          </TableBody>
+        </Table> */}
       </div>
       <ConfirmDialog
         title="Are you sure?"

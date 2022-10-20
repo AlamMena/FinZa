@@ -69,7 +69,7 @@ function MyApp({ Component, pageProps }) {
         <StyledEngineProvider injectFirst>
           <div className="flex w-full ">
             <SideBar />
-            <div className="lg:ml-72 md:ml-72 px-8 md:px-10 py-8 w-full  space-y-2 ">
+            <div className="lg:ml-64  md:ml-64 px-8 md:px-10 py-8 w-full  space-y-2 ">
               <div className="mb-8">
                 <TopBar />
               </div>

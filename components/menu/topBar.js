@@ -37,8 +37,9 @@ export default function TopBar() {
   return (
     <div className="flex justify-between w-full">
       <div className="flex space-x-2 items-center">
-        <h1 className="font-bold text-3xl">Hello, Jhon</h1>
-        <FaHandPeace className=" text-yellow-400 text-lg" />
+        {/* <h1 className="font-bold text-3xl">Hello, Jhon</h1>
+        <FaHandPeace className=" text-yellow-400 text-lg" /> */}
+        <BsSearch />
       </div>
       <div className="flex items-center right-0">
         <div className="relative flex items-center">

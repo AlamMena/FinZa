@@ -27,7 +27,7 @@ export default function CategoryFrom({ onSave, open, setOpen, data }) {
       >
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="md:w-96  flex flex-col p-8 space-y-6 px-10"
+          className="md:w-96  flex flex-col p-8 space-y-4 px-10"
         >
           <h1 className="font-semibold">New Category</h1>
 

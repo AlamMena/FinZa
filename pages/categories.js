@@ -45,7 +45,10 @@ export default function Categories() {
       // const response = await axios.post("/api/categories/upsert", data);
       // alert(response);
 
-      setCategories([...categories, { ...data, id: 1 }]);
+      setCategories([
+        ...categories,
+        { ...data, id: 1, balance: 100, profit: 200, loss: 100 },
+      ]);
     } catch (error) {
       setError(error);
       alert(error);
@@ -63,11 +66,12 @@ export default function Categories() {
 
   return (
     <div>
-      <div className="flex justify-end">
+      <div className="flex justify-between items-center my-4">
+        <h1 className="font-semibold text-xl px-4 py-2">Categories</h1>
         <Button
           variant="contained"
           onClick={handleOnClickCreate}
-          className="bg-black capitalize rounded-2xl hover:bg-black my-4"
+          className="bg-black capitalize rounded-2xl hover:bg-black"
         >
           New category
         </Button>
@@ -78,6 +82,7 @@ export default function Categories() {
         data={formData}
         setOpen={setFormOpen}
       />
+
       <CategoriesList
         data={categories}
         setFormOpen={setFormOpen}

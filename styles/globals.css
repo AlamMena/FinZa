@@ -23,29 +23,7 @@ a {
   @apply px-8 text-left;
 }
 
-.MuiTable-root{
-  border: none !important;
-  outline: none !important;
-}
-.MuiTableCell-root{
-  border: none !important;
-  outline: none !important;
-}
 
-.MuiDataGrid-columnSeparator {
-  display: none !important;
-}
-
-.MuiDataGrid-row {
-  @apply bg-purple-50 rounded-lg my-2 !important;
-}
-.MuiDataGrid-row:hover{
-  @apply cursor-pointer  !important;
-}
-
-.MuiDataGrid-columnHeaders {
-  @apply shadow-none border-none;
-}
 
  .MuiOutlinedInput-root {
   @apply rounded-xl;
