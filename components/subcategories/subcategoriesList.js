@@ -31,7 +31,7 @@ import {
 import { formatCurrency } from "../../Utils/utils";
 import ConfirmDialog from "../globals/confirmDialog";
 
-export default function CategoriesList({ setFormOpen, setFormData, data }) {
+export default function SubcategoriesList({ setFormOpen, setFormData, data }) {
   // confirm dialog state
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState();
@@ -62,7 +62,7 @@ export default function CategoriesList({ setFormOpen, setFormData, data }) {
     },
     {
       fiels: "Image",
-      flex: 1,
+      minWidth: 250,
       headerName: "Name",
       renderCell: (cells) => {
         return (
@@ -77,8 +77,8 @@ export default function CategoriesList({ setFormOpen, setFormData, data }) {
     },
     {
       field: "lastTransactionDate",
-      headerName: "Last Transaction Date",
       minWidth: 200,
+      headerName: "Last Transaction Date",
       renderCell: (cells) => {
         return <span>Aug 20 2022 </span>;
       },
@@ -115,6 +115,7 @@ export default function CategoriesList({ setFormOpen, setFormData, data }) {
     {
       field: "Actions",
       sortable: false,
+      width: 200,
       renderCell: (cells) => {
         return (
           <div className="flex space-x-4 justify-end mx-2">
