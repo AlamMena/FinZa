@@ -28,10 +28,15 @@ import {
   BsThreeDotsVertical,
   BsTrash,
 } from "react-icons/bs";
-import { formatCurrency } from "../../Utils/utils";
-import ConfirmDialog from "../globals/confirmDialog";
+import { debounce, formatCurrency } from "../../Utils/utils";
 
-export default function SubcategoriesList({ setFormOpen, setFormData, data }) {
+export default function CategoriesList({
+  setFormOpen,
+  setFormData,
+  onSearch,
+  data,
+  onDelete,
+}) {
   // confirm dialog state
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState();
@@ -56,13 +61,13 @@ export default function SubcategoriesList({ setFormOpen, setFormData, data }) {
 
   const columns = [
     {
-      field: "id",
+      field: "_id",
       width: 100,
       headerName: "Id",
     },
     {
       fiels: "Image",
-      minWidth: 250,
+      flex: 1,
       headerName: "Name",
       renderCell: (cells) => {
         return (
@@ -70,15 +75,15 @@ export default function SubcategoriesList({ setFormOpen, setFormData, data }) {
             <div className="bg-black p-3 rounded-full">
               <BsBank className="text-sm text-white" />
             </div>
-            <span className="font-semibold">{cells.row.name} Amazon </span>
+            <span className="font-semibold">{cells.row.name} </span>
           </div>
         );
       },
     },
     {
       field: "lastTransactionDate",
-      minWidth: 200,
       headerName: "Last Transaction Date",
+      minWidth: 200,
       renderCell: (cells) => {
         return <span>Aug 20 2022 </span>;
       },
@@ -107,7 +112,7 @@ export default function SubcategoriesList({ setFormOpen, setFormData, data }) {
     },
     {
       field: "balance",
-      headerName: "Balnce",
+      headerName: "Balance",
       renderCell: (cells) => {
         return formatCurrency(cells.row.profit);
       },
@@ -115,7 +120,6 @@ export default function SubcategoriesList({ setFormOpen, setFormData, data }) {
     {
       field: "Actions",
       sortable: false,
-      width: 200,
       renderCell: (cells) => {
         return (
           <div className="flex space-x-4 justify-end mx-2">
@@ -126,7 +130,7 @@ export default function SubcategoriesList({ setFormOpen, setFormData, data }) {
               <BsPen />
             </a>
             <a
-              onClick={() => handleOnClickDelete(cells.row)}
+              onClick={() => onDelete(cells.row)}
               className="text-red-500 cursor-pointer"
             >
               <BsTrash />
@@ -196,32 +200,26 @@ export default function SubcategoriesList({ setFormOpen, setFormData, data }) {
   //     </TableRow>
   //   );
   // };
-
-  const SearchInput = () => {
-    return (
-      <div className="flex justify-end p-4">
-        <TextField
-          id="standard-basic"
-          size="small"
-          // sx={{
-          //   "& fieldset": { border: "none" },
-          // }}
-          placeholder="search..."
-          className="mx-4 "
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start" className="mr-4">
-                <BsSearch />
-              </InputAdornment>
-            ),
-          }}
-        />
-      </div>
-    );
-  };
+  const handleSearch = debounce((e) => onSearch(e.target.value));
   return (
     <div className="w-full">
       <div className="w-full h-96  border-gray-100 rounded-xl">
+        <div className="flex justify-end p-4">
+          <TextField
+            id="standard-basic"
+            size="small"
+            placeholder="search..."
+            className="mx-4 "
+            onChange={handleSearch}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start" className="mr-4">
+                  <BsSearch />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </div>
         <DataGrid
           className="rounded-xl"
           disableSelectionOnClick
@@ -232,7 +230,8 @@ export default function SubcategoriesList({ setFormOpen, setFormData, data }) {
           pageSize={5}
           rowsPerPageOptions={[5]}
           loading={false}
-          components={{ Toolbar: SearchInput }}
+          getRowId={(row) => row._id}
+          // components={{ Toolbar: SearchInput }}
         />
 
         {/* <Table>
@@ -254,12 +253,6 @@ export default function SubcategoriesList({ setFormOpen, setFormData, data }) {
           </TableBody>
         </Table> */}
       </div>
-      <ConfirmDialog
-        title="Are you sure?"
-        open={confirmOpen}
-        onCancel={() => setConfirmOpen(false)}
-        // onConfirm={handleConfirmForm}
-      />
       <Snackbar
         open={alert}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

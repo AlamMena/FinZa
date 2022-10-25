@@ -3,18 +3,21 @@
 import { client } from "../database/database";
 
 export default async function handler(req, res) {
-  const connection = await client.connect();
-  console.log(connection);
+  await client.connect();
   try {
-    const db = client.db;
+    const db = client.db("Finza");
+
+    const { filter } = req.query;
+
     const categories = await db
       .collection("categories")
-      .find()
-      .limit(2)
+      .find({ name: { $regex: filter ?? "" }, isDeleted: false })
       .toArray();
+
     return res.status(201).json(categories);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "An error has occurred", errors: error });
   }
+  await client.close();
 }

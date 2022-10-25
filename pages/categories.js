@@ -3,37 +3,40 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import CategoryFrom from "../components/categories/categoryForm";
 import { Button } from "@mui/material";
+import ConfirmDialog from "../components/globals/confirmDialog";
 
 export default function Categories() {
   // category list states
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState([]);
 
+  // filters
+  const [filter, setFilter] = useState("");
+
   // form states
   const [formOpen, setFormOpen] = useState(false);
   const [formData, setFormData] = useState({});
 
+  // confirm form
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState();
+
   // errors states
-  const [error, setError] = useState();
+  const [errors, setError] = useState();
 
   const getCategoriesAsync = async () => {
     try {
-      // const { data } = await axios.get("/api/categories/getAll");
-      // setCategories(data);
-      // dispatch(setCategories(data));
+      const { data } = await axios.get(`/api/categories/get?filter=${filter}`);
+      setCategories(data);
     } catch (error) {
       setError(error);
     }
   };
 
-  const deleteCategoryAsync = async (id) => {
+  const handleDeleteCategory = async (data) => {
     try {
-      // const { data } = await axios.get("/api/categories/getAll");
-      // setCategories(data);
-      // dispatch(setCategories(data));
-      setCategories(
-        categories.filter((category) => category.id !== itemToDelte)
-      );
+      setConfirmOpen(true);
+      setCategoryToDelete({ ...data, isDeleted: true });
     } catch (error) {
       setError(error);
     }
@@ -41,17 +44,12 @@ export default function Categories() {
 
   const saveCategoryAsync = async (data) => {
     try {
-      // alert("response");
-      // const response = await axios.post("/api/categories/upsert", data);
-      // alert(response);
-
-      setCategories([
-        ...categories,
-        { ...data, id: 1, balance: 100, profit: 200, loss: 100 },
-      ]);
+      await axios.post("/api/categories/upsert", data);
+      await getCategoriesAsync();
     } catch (error) {
-      setError(error);
-      alert(error);
+      const { response } = error;
+      setError(response.data);
+      alert(JSON.stringify(response.data));
       return error;
     }
   };
@@ -62,8 +60,11 @@ export default function Categories() {
   };
   useEffect(() => {
     getCategoriesAsync();
-  }, []);
+  }, [filter]);
 
+  const handle = (value) => {
+    setFiler(value);
+  };
   return (
     <div>
       <div className="flex justify-between items-center my-4">
@@ -82,9 +83,19 @@ export default function Categories() {
         data={formData}
         setOpen={setFormOpen}
       />
-
+      <ConfirmDialog
+        title="Do you want to delete this category?"
+        open={confirmOpen}
+        onCancel={() => setConfirmOpen(false)}
+        onConfirm={() => {
+          saveCategoryAsync(categoryToDelete);
+          setConfirmOpen(false);
+        }}
+      />
       <CategoriesList
         data={categories}
+        onSearch={setFilter}
+        onDelete={handleDeleteCategory}
         setFormOpen={setFormOpen}
         setFormData={setFormData}
       />

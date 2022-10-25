@@ -2,7 +2,7 @@ import { Button, Dialog, FormControl, TextField } from "@mui/material";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-export default function SubcategoryFrom({ onSave, open, setOpen, data }) {
+export default function CategoryFrom({ onSave, open, setOpen, data }) {
   const { handleSubmit, register, reset } = useForm({ defaultValues: data });
 
   const onSubmit = async (data) => {
