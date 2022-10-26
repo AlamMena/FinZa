@@ -62,9 +62,6 @@ export default function Categories() {
     getCategoriesAsync();
   }, [filter]);
 
-  const handle = (value) => {
-    setFiler(value);
-  };
   return (
     <div>
       <div className="flex justify-between items-center my-4">

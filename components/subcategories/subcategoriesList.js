@@ -1,46 +1,16 @@
-import {
-  Alert,
-  Button,
-  InputAdornment,
-  Snackbar,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TextField,
-} from "@mui/material";
-import { DataGrid, gridClasses } from "@mui/x-data-grid";
+import { Alert, InputAdornment, Snackbar, TextField } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
-import {
-  BsArrow90DegUp,
-  BsArrowDown,
-  BsArrowUp,
-  BsArrowUpCircleFill,
-  BsArrowUpRight,
-  BsBank,
-  BsFillArrowUpRightSquareFill,
-  BsPen,
-  BsPlus,
-  BsPlusSquareFill,
-  BsSearch,
-  BsSortDown,
-  BsThreeDotsVertical,
-  BsTrash,
-} from "react-icons/bs";
+import { BsBank, BsPen, BsSearch, BsTrash } from "react-icons/bs";
 import { debounce, formatCurrency } from "../../Utils/utils";
 
-export default function CategoriesList({
+export default function SubcategoriesList({
   setFormOpen,
   setFormData,
   onSearch,
   data,
   onDelete,
 }) {
-  // confirm dialog state
-  const [confirmOpen, setConfirmOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState();
-
   // alert states
   const [alert, setAlert] = useState(false);
 
@@ -49,25 +19,20 @@ export default function CategoriesList({
     title: "",
   });
 
-  const handleOnClickEdit = (category) => {
-    setFormData(category);
+  const handleOnClickEdit = (subcategory) => {
+    setFormData(subcategory);
     setFormOpen(true);
-  };
-
-  const handleOnClickDelete = (category) => {
-    setConfirmOpen(true);
-    setItemToDelete(category);
   };
 
   const columns = [
     {
       field: "_id",
-      width: 100,
       headerName: "Id",
+      width: 200,
     },
     {
       fiels: "Image",
-      flex: 1,
+      minWidth: 200,
       headerName: "Name",
       renderCell: (cells) => {
         return (
@@ -141,65 +106,6 @@ export default function CategoriesList({
     },
   ];
 
-  // const handleConfirmForm = async () => {
-  //   try {
-  //     setConfirmOpen(true);
-
-  //     setAlertParams({
-  //       severity: "success",
-  //       title: "category deleted successfully",
-  //     });
-
-  //     setAlert(true);
-  //   } catch (error) {
-  //     setAlertParams({
-  //       severity: "error",
-  //       title: "Oops!, something went wrong, try later",
-  //     });
-  //     setAlert(true);
-  //   }
-  // };
-
-  // const CategoryRow = () => {
-  //   return (
-  //     <TableRow className=" bg-neutral-100 rounded-2xl my-2">
-  //       <TableCell className=" rounded-l-3xl">
-  //         {" "}
-  //         <div className="flex items-center space-x-4">
-  //           <div className="bg-black p-2 rounded-full">
-  //             <BsBank className="text-xs text-white" />
-  //           </div>
-  //           <span className="font-semibold text-xs">Grocery shop</span>
-  //         </div>
-  //       </TableCell>
-  //       <TableCell>
-  //         <span className="font-semibold text-xs opacity-40">Apr, 06 2022</span>
-  //       </TableCell>
-  //       <TableCell align="right">
-  //         <span className="flex font-semibold text-xs text-green-500 space-x-2">
-  //           <span>$5,000</span>
-  //           <BsArrowUpCircleFill />
-  //         </span>
-  //       </TableCell>
-  //       <TableCell className=" rounded-r-3xl border-spacing-8">
-  //         <div className="flex space-x-4">
-  //           <a
-  //             onClick={() => handleOnClickEdit(cells.row)}
-  //             className="text-purple-600 cursor-pointer"
-  //           >
-  //             <BsPen />
-  //           </a>
-  //           <a
-  //             onClick={() => handleOnClickDelete(cells.row)}
-  //             className="text-red-500 cursor-pointer"
-  //           >
-  //             <BsTrash />
-  //           </a>
-  //         </div>
-  //       </TableCell>
-  //     </TableRow>
-  //   );
-  // };
   const handleSearch = debounce((e) => onSearch(e.target.value));
   return (
     <div className="w-full">
@@ -233,25 +139,6 @@ export default function CategoriesList({
           getRowId={(row) => row._id}
           // components={{ Toolbar: SearchInput }}
         />
-
-        {/* <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell className=" font-semibold">Name</TableCell>
-              <TableCell className=" font-semibold">
-                Last Transaction Date
-              </TableCell>
-              <TableCell className=" font-semibold">Balance</TableCell>
-              <TableCell className=" font-semibold">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data &&
-              data.map((item) => (
-                <CategoryRow className="bg-blue-100 border-2 border-black" />
-              ))}
-          </TableBody>
-        </Table> */}
       </div>
       <Snackbar
         open={alert}

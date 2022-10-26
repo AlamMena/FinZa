@@ -1,13 +1,38 @@
-import { Button, Dialog, FormControl, TextField } from "@mui/material";
-import { useEffect } from "react";
+import {
+  Autocomplete,
+  Button,
+  Dialog,
+  FormControl,
+  TextField,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-export default function CategoryFrom({ onSave, open, setOpen, data }) {
-  const { handleSubmit, register, reset } = useForm({ defaultValues: data });
+export default function SubcategoryForm({
+  onSave,
+  open,
+  setOpen,
+  data,
+  searchCategories,
+}) {
+  const { handleSubmit, register, reset, setValue } = useForm({
+    defaultValues: data,
+  });
+  const [categories, setCategories] = useState([]);
 
   const onSubmit = async (data) => {
     await onSave(data);
     setOpen(false);
+    alert(JSON.stringify(data));
+  };
+
+  const getCategoriesAsync = async (value) => {
+    let categories = await searchCategories(value);
+    setCategories(
+      categories.map((category) => {
+        return { _id: category._id, name: category.name };
+      })
+    );
   };
 
   const handleClose = () => setOpen(false);
@@ -29,15 +54,33 @@ export default function CategoryFrom({ onSave, open, setOpen, data }) {
           onSubmit={handleSubmit(onSubmit)}
           className="md:w-96  flex flex-col p-8 space-y-4 px-10"
         >
-          <h1 className="font-semibold">New Category</h1>
+          <h1 className="font-semibold">New Subcategory</h1>
 
           <FormControl>
             <TextField
               {...register("name")}
               id="standard-basic"
-              label="name"
+              label="Name"
               size="small"
               variant="outlined"
+            />
+          </FormControl>
+          <FormControl>
+            <Autocomplete
+              id="combo-box-demo"
+              options={categories}
+              sx={{ width: 300 }}
+              defaultValue={data.category}
+              getOptionLabel={(opt) => opt.name}
+              onChange={(e, value) => {
+                setValue("category", value);
+              }}
+              onInputChange={(e, newValue) => {
+                getCategoriesAsync(newValue);
+              }}
+              renderInput={(params) => (
+                <TextField {...params} size="small" label="Movie" />
+              )}
             />
           </FormControl>
           <FormControl>

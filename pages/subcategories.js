@@ -1,14 +1,14 @@
-import CategoriesList from "../components/categories/categoriesList";
+import SubcategoriesList from "../components/subcategories/subcategoriesList";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CategoryFrom from "../components/categories/categoryForm";
+import SubcategoryFrom from "../components/subcategories/subcategoryForm";
 import { Button } from "@mui/material";
 import ConfirmDialog from "../components/globals/confirmDialog";
 
 export default function Categories() {
   // category list states
   const [isLoading, setIsLoading] = useState(true);
-  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
 
   // filters
   const [filter, setFilter] = useState("");
@@ -19,37 +19,46 @@ export default function Categories() {
 
   // confirm form
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [categoryToDelete, setCategoryToDelete] = useState();
+  const [subcategoryToDelete, setSubcategoryToDelete] = useState();
 
   // errors states
   const [errors, setError] = useState();
 
-  const getCategoriesAsync = async () => {
+  const searchCategoriesAsync = async (value) => {
     try {
-      const { data } = await axios.get(`/api/categories/get?filter=${filter}`);
-      setCategories(data);
+      const { data } = await axios.get(`/api/categories/get?filter=${value}`);
+      return data;
+    } catch (error) {
+      setError(error);
+    }
+  };
+  const getSubcategoriesAsync = async () => {
+    try {
+      const { data } = await axios.get(
+        `/api/subcategories/get?filter=${filter}`
+      );
+      setSubcategories(data);
     } catch (error) {
       setError(error);
     }
   };
 
-  const handleDeleteCategory = async (data) => {
+  const handleDeleteSubcategory = async (data) => {
     try {
       setConfirmOpen(true);
-      setCategoryToDelete({ ...data, isDeleted: true });
+      setSubcategoryToDelete({ ...data, isDeleted: true });
     } catch (error) {
       setError(error);
     }
   };
 
-  const saveCategoryAsync = async (data) => {
+  const saveSubcategoryAsync = async (data) => {
     try {
-      await axios.post("/api/categories/upsert", data);
-      await getCategoriesAsync();
+      await axios.post("/api/subcategories/upsert", data);
+      await getSubcategoriesAsync();
     } catch (error) {
       const { response } = error;
       setError(response.data);
-      alert(JSON.stringify(response.data));
       return error;
     }
   };
@@ -58,44 +67,43 @@ export default function Categories() {
     setFormOpen(true);
     setFormData({});
   };
+
   useEffect(() => {
-    getCategoriesAsync();
+    getSubcategoriesAsync();
   }, [filter]);
 
-  const handle = (value) => {
-    setFiler(value);
-  };
   return (
     <div>
       <div className="flex justify-between items-center my-4">
-        <h1 className="font-semibold text-xl px-4 py-2">Categories</h1>
+        <h1 className="font-semibold text-xl px-4 py-2">Subcategories</h1>
         <Button
           variant="contained"
           onClick={handleOnClickCreate}
           className="bg-black capitalize rounded-2xl hover:bg-black"
         >
-          New category
+          New Subcategory
         </Button>
       </div>
-      <CategoryFrom
-        onSave={saveCategoryAsync}
+      <SubcategoryFrom
+        onSave={saveSubcategoryAsync}
+        searchCategories={searchCategoriesAsync}
         open={formOpen}
         data={formData}
         setOpen={setFormOpen}
       />
       <ConfirmDialog
-        title="Do you want to delete this category?"
+        title="Do you want to delete this subCategory?"
         open={confirmOpen}
         onCancel={() => setConfirmOpen(false)}
         onConfirm={() => {
-          saveCategoryAsync(categoryToDelete);
+          saveSubcategoryAsync(subcategoryToDelete);
           setConfirmOpen(false);
         }}
       />
-      <CategoriesList
-        data={categories}
+      <SubcategoriesList
+        data={subcategories}
         onSearch={setFilter}
-        onDelete={handleDeleteCategory}
+        onDelete={handleDeleteSubcategory}
         setFormOpen={setFormOpen}
         setFormData={setFormData}
       />
