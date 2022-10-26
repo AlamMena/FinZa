@@ -18,7 +18,7 @@ const SideBarItem = ({ Icon, text, active }) => {
   return (
     <div
       className={`flex justify-left items-center space-x-4 py-3 px-4 ${
-        active && "font-bold rounded-xl"
+        active && "rounded-xl text-green-400"
       }
     hover:font-bold rounded-xl cursor-pointer transition-all ease-in-out duration-200`}
     >
@@ -29,7 +29,7 @@ const SideBarItem = ({ Icon, text, active }) => {
 };
 export default function SideBar() {
   return (
-    <div className="hidden md:fixed md:flex  flex-col h-screen w-60 px-4 py-2 rounded-r-3xl bg-neutral-50 ">
+    <div className="hidden md:fixed md:flex  flex-col h-screen w-60 px-4 py-2 rounded-r-3xl ">
       {/* header */}
       <h1 className="font-bold text-3xl px-4 py-8 ">FinzA</h1>
 

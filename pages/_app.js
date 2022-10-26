@@ -26,6 +26,14 @@ function MyApp({ Component, pageProps }) {
   });
 
   const customTheme = createTheme({
+    palette: {
+      primary: {
+        light: "#22C55E",
+        main: "#22C55E",
+        dark: "#002884",
+        contrastText: "#fff",
+      },
+    },
     typography: {
       fontFamily: ["Varela round", "sans-serif"].join(","),
     },
@@ -69,10 +77,7 @@ function MyApp({ Component, pageProps }) {
         <StyledEngineProvider injectFirst>
           <div className="flex w-full ">
             <SideBar />
-            <div className="lg:ml-64  md:ml-64 px-8 md:px-10 py-8 w-full  space-y-2 ">
-              <div className="mb-8">
-                <TopBar />
-              </div>
+            <div className="lg:ml-56  md:ml-56 px-8 md:px-10 py-8 w-full  space-y-2 ">
               <div>
                 <Component {...pageProps} />
               </div>

@@ -59,7 +59,7 @@ export default function Transactions() {
   };
   return (
     <div className="grid grid-cols-12 gap-x-8">
-      <div className="col-span-12 md:col-span-7 space-y-4 p-4 flex flex-col">
+      <div className="col-span-12 md:col-span-7 space-y-8 p-4 flex flex-col">
         <h1>Transactions</h1>
         {/* <Tabs value={value} onChange={handleChange}>
           <Tab {...a11yProps(0)}>
@@ -74,22 +74,32 @@ export default function Transactions() {
         {/* <TabPanel value={value} index={1}>
           Item two
         </TabPanel> */}
-        <div className="flex items-center justify-end space-x-2">
-          <SearchInput />
-          <BsPlusSquareFill className=" text-4xl" />
+        <div className="flex justify-between">
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
+            <Tab label="Item One" {...a11yProps(0)} />
+            <Tab label="Item Two" {...a11yProps(1)} />
+          </Tabs>
+
+          <div className="flex items-center justify-end space-x-2">
+            <SearchInput />
+            <BsPlusSquareFill className=" text-4xl text-green-600" />
+          </div>
         </div>
-        <span className="text-sm opacity-40 font-semibold">20 sep 2022</span>
-        <TransactionHistory />
-        <TransactionHistory />
-        <span className="text-sm my-8 opacity-40 font-semibold">
-          20 sep 2022
-        </span>
-        <TransactionHistory />
-        <TransactionHistory />
-        <TransactionHistory />
-        <TransactionHistory />
-        <span className="text-sm opacity-40 font-semibold">20 sep 2022</span>
-        <TransactionHistory />
+
+        <div className="flex flex-col space-y-4 mt-4">
+          <span className="text-sm opacity-40">20 sep 2022</span>
+          <TransactionHistory />
+          <TransactionHistory />
+        </div>
+        <div className="flex flex-col space-y-4">
+          <span className="text-sm opacity-40 ">20 sep 2022</span>
+          <TransactionHistory />
+          <TransactionHistory />
+        </div>
       </div>
       <div className="col-span-12 md:col-span-5 border-l-2">
         <div className="flex justify-center">
