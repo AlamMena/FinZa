@@ -36,6 +36,7 @@ export default function CategoriesList({
   onSearch,
   data,
   onDelete,
+  onClickCreate,
 }) {
   // confirm dialog state
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -62,12 +63,14 @@ export default function CategoriesList({
   const columns = [
     {
       field: "_id",
-      width: 100,
+      minWidth: 100,
+      flex: 1,
       headerName: "Id",
     },
     {
-      fiels: "Image",
+      field: "Name",
       flex: 1,
+      minWidth: 300,
       headerName: "Name",
       renderCell: (cells) => {
         return (
@@ -82,6 +85,7 @@ export default function CategoriesList({
     },
     {
       field: "lastTransactionDate",
+      flex: 1,
       headerName: "Last Transaction Date",
       minWidth: 200,
       renderCell: (cells) => {
@@ -90,6 +94,7 @@ export default function CategoriesList({
     },
     {
       field: "profit",
+      flex: 1,
       headerName: "Profit",
       renderCell: (cells) => {
         return (
@@ -100,6 +105,7 @@ export default function CategoriesList({
       },
     },
     {
+      flex: 1,
       field: "loss",
       headerName: "Loss",
       renderCell: (cells) => {
@@ -111,6 +117,7 @@ export default function CategoriesList({
       },
     },
     {
+      flex: 1,
       field: "balance",
       headerName: "Balance",
       renderCell: (cells) => {
@@ -118,6 +125,7 @@ export default function CategoriesList({
       },
     },
     {
+      flex: 1,
       field: "Actions",
       sortable: false,
       renderCell: (cells) => {
@@ -204,7 +212,7 @@ export default function CategoriesList({
   return (
     <div className="w-full">
       <div className="w-full h-96  border-gray-100 rounded-xl">
-        <div className="flex justify-end p-4">
+        <div className="flex justify-start md:justify-end items-center p-4">
           <TextField
             id="standard-basic"
             size="small"
@@ -218,6 +226,10 @@ export default function CategoriesList({
                 </InputAdornment>
               ),
             }}
+          />
+          <BsPlusSquareFill
+            className=" text-4xl text-black"
+            onClick={onClickCreate}
           />
         </div>
         <DataGrid

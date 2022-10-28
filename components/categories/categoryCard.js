@@ -1,23 +1,23 @@
-import {BsBasket} from 'react-icons/bs'
+import { BsBasket, BsCurrencyDollar } from "react-icons/bs";
 
-
-export default function CategoryCard({name,description,icon}) {
+export default function CategoryCard({ name, description, icon }) {
+  const colors = ["bg-blue-50", "bg-green-50", "bg-red-50", "bg-purple-50"];
+  const random = Math.floor(Math.random() * colors.length);
   return (
-    <>
-    <div className='flex items-center space-x-4 max-w-xs shadow-md rounded-3xl py-6 px-8'>
-    <BsBasket className='text-3xl'/>
-        <div className='flex flex-col'>
-            <span>{name}</span>
-            <span className='text-neutral-400 text-xs'>{description}</span>
-        </div>
+    <div
+      className={`flex flex-col justify-between ${colors[random]} w-full my-2 md:w-44 h-36 p-4 rounded-lg`}
+    >
+      <div className="flex justify-between">
+        <span className="font-bold text-xs">Amazon</span>
+        <BsCurrencyDollar className="text-2xl" />
+      </div>
+      <div className="flex flex-col">
+        <span className="font-bold">$920,100.12</span>
+        <span className=" text-black text-opacity-30 text-xs">$120.21</span>
+      </div>
     </div>
-
-    </>
   );
 }
-
-
-
 
 // <div class="overflow-x-auto relative shadow-md sm:rounded-lg ">
 //     {/* <div class="flex justify-between items-center bg-white p-6 ">
@@ -48,7 +48,7 @@ export default function CategoryCard({name,description,icon}) {
 //         </thead>
 //         <tbody>
 //             <tr class="bg-white dark:bg-black hover:bg-gray-50 ">
-              
+
 //                 <th scope="row" class="flex items-center py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
 //                     <img class="w-10 h-10 rounded-full" src="https://cdn.dribbble.com/users/1145170/screenshots/14925093/brand.png?compress=1&resize=400x300&vertical=top" alt="Jese image"/>
 //                     <div class="pl-3">

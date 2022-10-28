@@ -1,121 +1,127 @@
-import { InputAdornment, Tab, Tabs, TextField } from "@mui/material";
-import { useState } from "react";
-import {
-  BsBank,
-  BsPlug,
-  BsPlus,
-  BsPlusSquareFill,
-  BsSearch,
-} from "react-icons/bs";
-import TransactionHistory from "../components/transactions/transactionHistory";
+import { InputAdornment, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
+import { BsSearch } from "react-icons/bs";
+import CategoryCard from "../components/categories/categoryCard";
+import TransactionList from "../components/transactions/transactionList";
+import Transaction from "../components/transactions/transaction";
+import TransactionForm from "../components/transactions/transactionForm";
+import axios from "axios";
+import ConfirmDialog from "../components/globals/confirmDialog";
+
 export default function Transactions() {
-  const [value, setValue] = useState(0);
+  // category list states
+  const [isLoading, setIsLoading] = useState(true);
+  const [transactions, setTransactions] = useState([]);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  // filters
+  const [filter, setFilter] = useState("");
+
+  // form states
+  const [formOpen, setFormOpen] = useState(false);
+  const [formData, setFormData] = useState();
+
+  // confirm form
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [transactionToDelete, setTransactionToDelete] = useState();
+
+  // errors states
+  const [errors, setError] = useState();
+  const searchTransactionsAsync = async (value) => {
+    try {
+      const { data } = await axios.get(`/api/categories/get?filter=${value}`);
+      return data;
+    } catch (error) {
+      setError(error);
+    }
+  };
+  const getTransactionsAsync = async () => {
+    try {
+      const { data } = await axios.get(
+        `/api/transactions/get?filter=${filter}`
+      );
+      setTransactions(data);
+    } catch (error) {
+      setError(error);
+    }
   };
 
-  const TabPanel = (props) => {
-    const { children, value, index, ...other } = props;
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && <div>{children}</div>}
-      </div>
-    );
+  const handleDeleteTransaction = async (data) => {
+    try {
+      setConfirmOpen(true);
+      setTransactionToDelete({ ...data, isDeleted: true });
+    } catch (error) {
+      setError(error);
+    }
   };
 
-  function a11yProps(index) {
-    return {
-      id: `simple-tab-${index}`,
-      "aria-controls": `simple-tabpanel-${index}`,
-    };
-  }
-  const SearchInput = () => {
-    return (
-      <div className="flex justify-end">
-        <TextField
-          id="standard-basic"
-          size="small"
-          // sx={{
-          //   "& fieldset": { border: "none" },
-          // }}
-          placeholder="search..."
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start" className="mr-4">
-                <BsSearch />
-              </InputAdornment>
-            ),
+  const saveTransactionAsync = async (data) => {
+    try {
+      await axios.post("/api/transactions/upsert", data);
+      await getTransactionsAsync();
+    } catch (error) {
+      alert(error);
+      return error;
+    }
+  };
+
+  const handleOnClickCreate = () => {
+    setFormOpen(true);
+    setFormData({});
+  };
+  useEffect(() => {
+    getTransactionsAsync();
+  }, [filter]);
+
+  return (
+    <div className="grid grid-cols-12 gap-x-14">
+      <div className="col-span-12 md:col-span-8 ">
+        <h1 className=" font-extrabold my-0">Overview</h1>
+        <h3 className=" font-extrabold my-4">Accounts</h3>
+        <div className="flex justify-between overflow-x-auto space-x-4 my-4">
+          <CategoryCard />
+          <CategoryCard />
+          <CategoryCard />
+          <CategoryCard />
+        </div>
+        <div className={`hidden ${formOpen && "flex"}`}>
+          <TransactionForm
+            onSave={saveTransactionAsync}
+            searchTransactions={searchTransactionsAsync}
+            open={formOpen}
+            data={formData}
+            setOpen={setFormOpen}
+          />
+        </div>
+        <ConfirmDialog
+          title="Do you want to delete this transaction?"
+          open={confirmOpen}
+          onCancel={() => setConfirmOpen(false)}
+          onConfirm={() => {
+            saveTransactionAsync(transactionToDelete);
+            setConfirmOpen(false);
           }}
         />
+        <TransactionList
+          data={transactions}
+          onClickCreate={handleOnClickCreate}
+          onSearch={setFilter}
+          onDelete={handleDeleteTransaction}
+          setFormOpen={setFormOpen}
+          setFormData={setFormData}
+        />
       </div>
-    );
-  };
-  return (
-    <div className="grid grid-cols-12 gap-x-8">
-      <div className="col-span-12 md:col-span-7 space-y-8 p-4 flex flex-col">
-        <h1>Transactions</h1>
-        {/* <Tabs value={value} onChange={handleChange}>
-          <Tab {...a11yProps(0)}>
-            <span> Balance</span>
-          </Tab>
-          <Tab label="Profit" {...a11yProps(1)} />
-          <Tab label="Loss" {...a11yProps(2)} />
-        </Tabs>
-        <TabPanel value={value} index={0}>
-          Item One
-        </TabPanel> */}
-        {/* <TabPanel value={value} index={1}>
-          Item two
-        </TabPanel> */}
-        <div className="flex justify-between">
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-          >
-            <Tab label="Item One" {...a11yProps(0)} />
-            <Tab label="Item Two" {...a11yProps(1)} />
-          </Tabs>
-
-          <div className="flex items-center justify-end space-x-2">
-            <SearchInput />
-            <BsPlusSquareFill className=" text-4xl text-green-600" />
-          </div>
+      <div className=" col-span-12 md:col-span-4 flex flex-col ">
+        <h1 className=" font-extrabold">Transafers</h1>
+        <div className="flex justify-between my-4">
+          <h3 className="font-extrabold">Scheduled</h3>
+          <h3 className="font-extrabold text-xs">View all {">"} </h3>
         </div>
-
-        <div className="flex flex-col space-y-4 mt-4">
-          <span className="text-sm opacity-40">20 sep 2022</span>
-          <TransactionHistory />
-          <TransactionHistory />
-        </div>
-        <div className="flex flex-col space-y-4">
-          <span className="text-sm opacity-40 ">20 sep 2022</span>
-          <TransactionHistory />
-          <TransactionHistory />
-        </div>
-      </div>
-      <div className="col-span-12 md:col-span-5 border-l-2">
-        <div className="flex justify-center">
-          <div className="bg-black p-4 rounded-full">
-            <BsBank className="text-4xl text-white " />
-          </div>
-        </div>
-        <div className="flex justify-center mt-8">
-          <span className="font-semibold">Amazon category</span>
-        </div>
-
-        <div className="flex flex-col items-center justify-center mt-4">
-          <span className="font-semibold">$2,912.00</span>
-          <span className="text-sm opacity-30 font-semibold">
-            14 aug 2022 at 5:45 PM
-          </span>
+        <div className="flex flex-col space-y-2 my-4">
+          <Transaction />
+          <Transaction />
+          <Transaction />
+          <Transaction />
+          <Transaction />
         </div>
       </div>
     </div>

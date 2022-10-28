@@ -17,8 +17,8 @@ import {
 const SideBarItem = ({ Icon, text, active }) => {
   return (
     <div
-      className={`flex justify-left items-center space-x-4 py-3 px-4 ${
-        active && "rounded-xl text-green-400"
+      className={`flex justify-left items-center space-x-4 py-3 px-4 text-white ${
+        active && "rounded-xl text-green-200"
       }
     hover:font-bold rounded-xl cursor-pointer transition-all ease-in-out duration-200`}
     >
@@ -29,9 +29,9 @@ const SideBarItem = ({ Icon, text, active }) => {
 };
 export default function SideBar() {
   return (
-    <div className="hidden md:fixed md:flex  flex-col h-screen w-60 px-4 py-2 rounded-r-3xl ">
+    <div className="hidden md:fixed md:flex bg-black  flex-col h-screen w-60 px-4 py-2  ">
       {/* header */}
-      <h1 className="font-bold text-3xl px-4 py-8 ">FinzA</h1>
+      <h1 className="font-bold text-3xl px-4 py-8 text-white ">FinzA</h1>
 
       {/* menu */}
       <div className="flex flex-col max-w-sm space-y-2 mt-4 ">

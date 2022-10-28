@@ -71,7 +71,7 @@ html {
   @apply rounded-lg !important;
 }
 
-.MuiDataGrid-columnHeaders {
+.dataGrid-whitout-border .MuiDataGrid-columnHeaders {
   @apply bg-slate-100 rounded-lg !important;
 }
 

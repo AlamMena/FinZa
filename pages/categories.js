@@ -66,13 +66,6 @@ export default function Categories() {
     <div>
       <div className="flex justify-between items-center my-4">
         <h1 className="font-semibold text-xl px-4 py-2">Categories</h1>
-        <Button
-          variant="contained"
-          onClick={handleOnClickCreate}
-          className="bg-black capitalize rounded-2xl hover:bg-black"
-        >
-          New category
-        </Button>
       </div>
       <CategoryFrom
         onSave={saveCategoryAsync}
@@ -91,6 +84,7 @@ export default function Categories() {
       />
       <CategoriesList
         data={categories}
+        onClickCreate={handleOnClickCreate}
         onSearch={setFilter}
         onDelete={handleDeleteCategory}
         setFormOpen={setFormOpen}

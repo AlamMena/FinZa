@@ -29,7 +29,7 @@ function MyApp({ Component, pageProps }) {
     palette: {
       primary: {
         light: "#22C55E",
-        main: "#22C55E",
+        main: "#00000",
         dark: "#002884",
         contrastText: "#fff",
       },
@@ -77,7 +77,7 @@ function MyApp({ Component, pageProps }) {
         <StyledEngineProvider injectFirst>
           <div className="flex w-full ">
             <SideBar />
-            <div className="lg:ml-56  md:ml-56 px-8 md:px-10 py-8 w-full  space-y-2 ">
+            <div className="lg:ml-60  md:ml-60 px-8 md:px-10 py-8 w-full  space-y-2 ">
               <div>
                 <Component {...pageProps} />
               </div>
