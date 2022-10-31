@@ -10,6 +10,7 @@ import {
   BsThreeDotsVertical,
   BsTrash,
 } from "react-icons/bs";
+import { debounce } from "../../Utils/utils";
 
 export default function TransactionList({
   setFormOpen,
@@ -132,6 +133,7 @@ export default function TransactionList({
       },
     },
   ];
+  const handleSearch = debounce((e) => onSearch(e.target.value));
 
   return (
     <div className="w-full h-96">
@@ -176,6 +178,7 @@ export default function TransactionList({
             size="small"
             placeholder="search..."
             className="mx-4 "
+            onChange={handleSearch}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start" className="mr-4">

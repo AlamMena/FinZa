@@ -9,15 +9,7 @@ import {
   StyledEngineProvider,
   ThemeProvider,
 } from "@mui/material/styles";
-import { FaHandPeace } from "react-icons/fa";
-import {
-  BsBell,
-  BsFillMoonFill,
-  BsFillSunFill,
-  BsSearch,
-} from "react-icons/bs";
-import { FcBusinessman } from "react-icons/fc";
-import TopBar from "../components/menu/topBar";
+import { ToastContainer } from "react-toastify";
 
 function MyApp({ Component, pageProps }) {
   const cache = createCache({
@@ -50,20 +42,23 @@ function MyApp({ Component, pageProps }) {
       },
     },
   });
-  // const theme = createTheme({
-  //   components: {
-  //     MuiPopover: {
-  //       defaultProps: {
-  //         container: rootElement,
-  //       },
-  //     },
-  //     MuiPopper: {
-  //       defaultProps: {
-  //         container: rootElement,
-  //       },
-  //     },
-  //   },
-  // });
+
+  const CustomToastContainer = () => {
+    return (
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    );
+  };
 
   return (
     <Provider store={store}>
@@ -76,8 +71,11 @@ function MyApp({ Component, pageProps }) {
       <ThemeProvider theme={customTheme}>
         <StyledEngineProvider injectFirst>
           <div className="flex w-full ">
+            <div className="fixed">
+              <ToastContainer />
+            </div>
             <SideBar />
-            <div className="lg:ml-60  md:ml-60 px-8 md:px-10 py-8 w-full  space-y-2 ">
+            <div className="lg:ml-60 md:ml-60 px-8 md:px-10 py-8 w-full space-y-2 ">
               <div>
                 <Component {...pageProps} />
               </div>

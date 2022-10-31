@@ -11,10 +11,28 @@ export default async function get(req, res) {
 
     const transactions = await db
       .collection("transactions")
-      .find({
-        title: { $regex: filter ?? "", $options: "i" },
-        isDeleted: false,
-      })
+      .aggregate([
+        {
+          $match: {
+            title: { $regex: filter ?? "", $options: "i" },
+            isDeleted: false,
+          },
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "categoryId",
+            foreignField: "_id",
+            as: "category",
+          },
+        },
+        {
+          $unwind: {
+            path: "$category",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+      ])
       .toArray();
 
     return res.status(200).json(transactions);

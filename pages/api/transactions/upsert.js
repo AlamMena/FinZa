@@ -12,15 +12,23 @@ export default async function upsert(req, res) {
 
     const db = client.db("Finza");
     const transactions = db.collection("transactions");
+    const categories = db.collection("categories");
 
     const { _id, category, sign, title, description, amount, date, isDeleted } =
       req.body;
 
+    const categoryExists = await categories.findOne({
+      _id: new ObjectId(category._id),
+      isDeleted: false,
+    });
+    if (!categoryExists) {
+      return res.status(400).send({ message: "Invalid category" });
+    }
     let query = { _id: new ObjectId(_id) };
     let set = {
       $set: {
         title: title,
-        category: category,
+        categoryId: new ObjectId(category._id),
         date: date ?? new Date(),
         description: description,
         amount: amount,

@@ -7,6 +7,7 @@ import Transaction from "../components/transactions/transaction";
 import TransactionForm from "../components/transactions/transactionForm";
 import axios from "axios";
 import ConfirmDialog from "../components/globals/confirmDialog";
+import { toast } from "react-toastify";
 
 export default function Transactions() {
   // category list states
@@ -26,7 +27,7 @@ export default function Transactions() {
 
   // errors states
   const [errors, setError] = useState();
-  const searchTransactionsAsync = async (value) => {
+  const searchCategoriesAsync = async (value) => {
     try {
       const { data } = await axios.get(`/api/categories/get?filter=${value}`);
       return data;
@@ -53,11 +54,18 @@ export default function Transactions() {
       setError(error);
     }
   };
+  const notify = () => toast("Wow so easy!");
 
   const saveTransactionAsync = async (data) => {
     try {
-      await axios.post("/api/transactions/upsert", data);
+      await toast.promise(axios.post("/api/transactions/upsert", data), {
+        pending: "Creating your transaction",
+        success: "Awsome your transaction has been created!",
+        error: "Oops!, something went wrong",
+      });
+
       await getTransactionsAsync();
+      notify();
     } catch (error) {
       alert(error);
       return error;
@@ -86,7 +94,7 @@ export default function Transactions() {
         <div className={`hidden ${formOpen && "flex"}`}>
           <TransactionForm
             onSave={saveTransactionAsync}
-            searchTransactions={searchTransactionsAsync}
+            searchCategoryAsync={searchCategoriesAsync}
             open={formOpen}
             data={formData}
             setOpen={setFormOpen}
