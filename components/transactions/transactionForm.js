@@ -6,11 +6,13 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
+  FormControlLabel,
   FormHelperText,
   InputAdornment,
   InputLabel,
   MenuItem,
   Select,
+  Switch,
   TextField,
 } from "@mui/material";
 import {
@@ -23,6 +25,7 @@ import dayjs from "dayjs";
 
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { debounce } from "../../Utils/utils";
 
 export default function TransactionForm({
@@ -36,10 +39,8 @@ export default function TransactionForm({
     defaultValues: data,
   });
   const [categories, setCategories] = useState([]);
-  const [date, setDate] = useState(dayjs(new Date()));
 
   const onSubmit = async (data) => {
-    // alert(JSON.stringify(data));
     await onSave(data);
     setOpen(false);
   };
@@ -80,16 +81,35 @@ export default function TransactionForm({
             <h1 className="font-semibold">Transaction</h1>
           </DialogTitle>
           <DialogContent className="space-y-4">
+            <FormControl>
+              <Controller
+                control={control}
+                name="payed"
+                render={({ field: { onChange, value, ...field } }) => (
+                  <FormControlLabel
+                    control={<Switch defaultChecked />}
+                    label="Checked"
+                  />
+                )}
+              ></Controller>
+            </FormControl>
+
             <FormControl fullWidth>
-              <TextField
-                {...register("title")}
-                className="mt-2"
-                id="standard-basic"
-                label="Title"
-                size="small"
-                variant="outlined"
-                helperText="Provide a title for your transaction"
-              />
+              <Controller
+                control={control}
+                name="title"
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    className="mt-2"
+                    id="standard-basic"
+                    label="Title"
+                    size="small"
+                    variant="outlined"
+                    helperText="Provide a title for your transaction"
+                  />
+                )}
+              ></Controller>
             </FormControl>
 
             <FormControl fullWidth>
@@ -172,26 +192,14 @@ export default function TransactionForm({
                   control={control}
                   name="date"
                   rules={{ required: true }}
-                  render={({
-                    field: { onChange, value },
-                    fieldState: { error },
-                  }) => (
+                  render={({ field: { onChange, value } }) => (
                     <DateTimePicker
                       placeholderText="Select date"
                       onChange={(date) => onChange(date)}
                       selected={value}
                       value={value}
                       renderInput={(props) => (
-                        <TextField
-                          error={error !== undefined}
-                          helperText={
-                            error
-                              ? "Please provide a valid category"
-                              : "Select a date when your transaction will be indicted"
-                          }
-                          size="small"
-                          {...props}
-                        />
+                        <TextField size="small" {...props} />
                       )}
                     />
                   )}

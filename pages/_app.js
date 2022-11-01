@@ -3,6 +3,8 @@ import SideBar from "../components/menu/sideBar";
 import { Provider } from "react-redux";
 import { store } from "../Store/store";
 import "../styles/globals.css";
+import "react-toastify/dist/ReactToastify.css";
+
 import createCache from "@emotion/cache";
 import {
   createTheme,
@@ -20,9 +22,9 @@ function MyApp({ Component, pageProps }) {
   const customTheme = createTheme({
     palette: {
       primary: {
-        light: "#22C55E",
+        light: "#9333EA",
         main: "#00000",
-        dark: "#002884",
+        dark: "#9333EA",
         contrastText: "#fff",
       },
     },
@@ -43,23 +45,6 @@ function MyApp({ Component, pageProps }) {
     },
   });
 
-  const CustomToastContainer = () => {
-    return (
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-    );
-  };
-
   return (
     <Provider store={store}>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -71,14 +56,10 @@ function MyApp({ Component, pageProps }) {
       <ThemeProvider theme={customTheme}>
         <StyledEngineProvider injectFirst>
           <div className="flex w-full ">
-            <div className="fixed">
-              <ToastContainer />
-            </div>
             <SideBar />
             <div className="lg:ml-60 md:ml-60 px-8 md:px-10 py-8 w-full space-y-2 ">
-              <div>
-                <Component {...pageProps} />
-              </div>
+              <Component {...pageProps} />
+              <ToastContainer />
             </div>
           </div>
         </StyledEngineProvider>

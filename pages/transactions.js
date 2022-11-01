@@ -54,7 +54,6 @@ export default function Transactions() {
       setError(error);
     }
   };
-  const notify = () => toast("Wow so easy!");
 
   const saveTransactionAsync = async (data) => {
     try {
@@ -63,9 +62,7 @@ export default function Transactions() {
         success: "Awsome your transaction has been created!",
         error: "Oops!, something went wrong",
       });
-
       await getTransactionsAsync();
-      notify();
     } catch (error) {
       alert(error);
       return error;
