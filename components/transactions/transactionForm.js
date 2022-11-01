@@ -87,8 +87,8 @@ export default function TransactionForm({
                 name="payed"
                 render={({ field: { onChange, value, ...field } }) => (
                   <FormControlLabel
-                    control={<Switch defaultChecked />}
-                    label="Checked"
+                    control={<Switch defaultChecked color="secondary" />}
+                    label="Payed"
                   />
                 )}
               ></Controller>
