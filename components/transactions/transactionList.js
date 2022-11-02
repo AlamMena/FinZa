@@ -1,6 +1,6 @@
 import { InputAdornment, Popover, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BsArrowUp,
   BsBank,
@@ -10,7 +10,7 @@ import {
   BsThreeDotsVertical,
   BsTrash,
 } from "react-icons/bs";
-import { debounce } from "../../Utils/utils";
+import { debounce, formatCurrency, formatDate } from "../../Utils/utils";
 
 export default function TransactionList({
   setFormOpen,
@@ -19,6 +19,7 @@ export default function TransactionList({
   data,
   onDelete,
   onClickCreate,
+  isLoading,
 }) {
   const colors = ["bg-blue-50", "bg-green-50", "bg-red-50", "bg-orange-50"];
   const random = Math.floor(Math.random() * colors.length);
@@ -93,8 +94,11 @@ export default function TransactionList({
     {
       field: "date",
       headerName: "Date",
-      minWidth: 180,
+      minWidth: 190,
       flex: 1,
+      renderCell: (cells) => {
+        return <span>{formatDate(cells.row.date)}</span>;
+      },
     },
     {
       field: "status",
@@ -115,6 +119,9 @@ export default function TransactionList({
       minWidth: 150,
       align: "end",
       headerName: "Amount",
+      renderCell: (cells) => {
+        return <span>{formatCurrency(cells.row.amount)}</span>;
+      },
     },
     {
       field: "data",
@@ -133,6 +140,7 @@ export default function TransactionList({
       },
     },
   ];
+
   const handleSearch = debounce((e) => onSearch(e.target.value));
 
   return (
@@ -200,9 +208,9 @@ export default function TransactionList({
         rows={data}
         rowHeight={65}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        loading={false}
+        pageSize={4}
+        rowsPerPageOptions={[4]}
+        loading={isLoading}
         getRowId={(row) => row._id}
         // components={{ Toolbar: SearchInput }}
       />

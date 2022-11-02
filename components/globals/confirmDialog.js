@@ -10,7 +10,8 @@ export default function ConfirmDialog(props) {
         <div className="flex flex-col px-6 pt-8">
           <span className="text-center flex items-center">
             {" "}
-            <BsExclamationDiamondFill className="text-gray-800 mr-1" /> {title}
+            {/* <BsExclamationDiamondFill className="text-gray-800 mr-1" /> */}
+            {title}
           </span>
           <span className="text-center">{description}</span>
         </div>

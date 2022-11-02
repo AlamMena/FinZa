@@ -37,11 +37,14 @@ export default function Transactions() {
   };
   const getTransactionsAsync = async () => {
     try {
+      setIsLoading(true);
       const { data } = await axios.get(
         `/api/transactions/get?filter=${filter}`
       );
       setTransactions(data);
+      setIsLoading(false);
     } catch (error) {
+      toast.error("Opps, something went wrong");
       setError(error);
     }
   };
@@ -56,17 +59,19 @@ export default function Transactions() {
   };
 
   const saveTransactionAsync = async (data) => {
-    try {
-      await toast.promise(axios.post("/api/transactions/upsert", data), {
-        pending: "Creating your transaction",
-        success: "Awsome your transaction has been created!",
-        error: "Oops!, something went wrong",
-      });
-      await getTransactionsAsync();
-    } catch (error) {
-      alert(error);
-      return error;
-    }
+    // alert(isLoading);
+    const savePromise = new Promise((resolve) =>
+      setTimeout(
+        () => resolve(axios.post("/api/transactions/upsert", data)),
+        1000
+      )
+    );
+    await toast.promise(savePromise, {
+      pending: "Loading",
+      success: "Awsome!, action completed",
+      error: "Oops!, something went wrong",
+    });
+    await getTransactionsAsync();
   };
 
   const handleOnClickCreate = () => {
@@ -74,7 +79,9 @@ export default function Transactions() {
     setFormData({});
   };
   useEffect(() => {
+    setIsLoading(true);
     getTransactionsAsync();
+    setIsLoading(false);
   }, [filter]);
 
   return (
@@ -107,6 +114,7 @@ export default function Transactions() {
           }}
         />
         <TransactionList
+          isLoading={isLoading}
           data={transactions}
           onClickCreate={handleOnClickCreate}
           onSearch={setFilter}

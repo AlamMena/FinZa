@@ -35,14 +35,14 @@ export default function TransactionForm({
   data,
   searchCategoryAsync,
 }) {
-  const { handleSubmit, register, reset, setValue, control } = useForm({
+  const { handleSubmit, register, reset, control } = useForm({
     defaultValues: data,
   });
   const [categories, setCategories] = useState([]);
 
   const onSubmit = async (data) => {
-    await onSave(data);
     setOpen(false);
+    await onSave(data);
   };
 
   const getCategoriesAsync = async (value) => {
@@ -87,7 +87,16 @@ export default function TransactionForm({
                 name="payed"
                 render={({ field: { onChange, value, ...field } }) => (
                   <FormControlLabel
-                    control={<Switch defaultChecked color="secondary" />}
+                    control={
+                      <Switch
+                        {...field}
+                        onChange={onChange}
+                        value={value ?? true}
+                        defaultChecked
+                        size="small"
+                        color="secondary"
+                      />
+                    }
                     label="Payed"
                   />
                 )}
@@ -98,15 +107,21 @@ export default function TransactionForm({
               <Controller
                 control={control}
                 name="title"
-                render={({ field }) => (
+                rules={{ required: true }}
+                render={({ field, fieldState: { error } }) => (
                   <TextField
                     {...field}
+                    error={error != undefined}
                     className="mt-2"
                     id="standard-basic"
                     label="Title"
                     size="small"
                     variant="outlined"
-                    helperText="Provide a title for your transaction"
+                    helperText={
+                      error
+                        ? "You must provide a title for this transaction"
+                        : "Provide a title for your transaction"
+                    }
                   />
                 )}
               ></Controller>
@@ -114,24 +129,30 @@ export default function TransactionForm({
 
             <FormControl fullWidth>
               <Controller
-                render={({ field: { ref, onChange, ...field } }) => (
+                rules={{ require: true }}
+                render={({
+                  field: { ref, onChange, ...field },
+                  fieldState: { error },
+                }) => (
                   <Autocomplete
+                    {...field}
                     options={categories}
                     disableClearable
                     onChange={(_, data) => {
                       onChange(data);
                     }}
-                    defaultValue={
-                      data ? data.category : { _id: "d", name: "value" }
-                    }
                     getOptionLabel={(option) => option.name}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        {...field}
+                        error={error != undefined}
                         onChange={handleSearchCategories}
                         inputRef={ref}
-                        helperText="Find the account for your transaction"
+                        helperText={
+                          error
+                            ? "You must select an account"
+                            : "Find the account for your transaction"
+                        }
                         size="small"
                         label="Category"
                         variant="outlined"
@@ -187,24 +208,38 @@ export default function TransactionForm({
             </div>
 
             <FormControl fullWidth>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Controller
-                  control={control}
-                  name="date"
-                  rules={{ required: true }}
-                  render={({ field: { onChange, value } }) => (
+              <Controller
+                control={control}
+                name="date"
+                defaultValue={new Date()}
+                rules={{ required: true }}
+                render={({
+                  field: { onChange, value, ...field },
+                  fieldState: { error },
+                }) => (
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateTimePicker
-                      placeholderText="Select date"
-                      onChange={(date) => onChange(date)}
-                      selected={value}
+                      {...field}
+                      onChange={(date) => {
+                        onChange(date);
+                      }}
                       value={value}
                       renderInput={(props) => (
-                        <TextField size="small" {...props} />
+                        <TextField
+                          {...props}
+                          error={error != undefined}
+                          size="small"
+                          helperText={
+                            error
+                              ? "You must provide a date for this transaction"
+                              : "Provide a date to payed this transaction"
+                          }
+                        />
                       )}
                     />
-                  )}
-                />
-              </LocalizationProvider>
+                  </LocalizationProvider>
+                )}
+              />
             </FormControl>
             <FormControl fullWidth>
               <TextField

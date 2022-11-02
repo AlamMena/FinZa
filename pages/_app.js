@@ -12,6 +12,7 @@ import {
   ThemeProvider,
 } from "@mui/material/styles";
 import { ToastContainer } from "react-toastify";
+import PrivateRoute from "../components/security/PrivateRoute";
 
 function MyApp({ Component, pageProps }) {
   const cache = createCache({
@@ -55,13 +56,17 @@ function MyApp({ Component, pageProps }) {
       />
       <ThemeProvider theme={customTheme}>
         <StyledEngineProvider injectFirst>
-          <div className="flex w-full ">
-            <SideBar />
-            <div className="lg:ml-60 md:ml-60 px-8 md:px-10 py-8 w-full space-y-2 ">
-              <Component {...pageProps} />
-              <ToastContainer />
+          <PrivateRoute>
+            <div className="flex w-full ">
+              <SideBar />
+              <div className="lg:ml-60 md:ml-60 px-8 md:px-10 py-8 w-full space-y-2 ">
+                <Component {...pageProps} />
+                <ToastContainer
+                  toastStyle={{ fontFamily: "Varela round, sans-serif" }}
+                />
+              </div>
             </div>
-          </div>
+          </PrivateRoute>
         </StyledEngineProvider>
       </ThemeProvider>
     </Provider>
