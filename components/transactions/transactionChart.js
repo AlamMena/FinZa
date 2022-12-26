@@ -24,36 +24,38 @@ ChartJS.register(
 
 export const options = {
   responsive: true,
-  scales: {
-    y: {
-      ticks: {
-        display: false,
-      },
-      grid: {
-        display: false,
-        color:'rgb(255,255,255,1)'
-      },
-     
-    },
-    x: {
-        ticks: {
-          display: true,
-        },
-        grid: {
-          display: true,
-          color:'rgb(100,100,100)'
-        },
-       
-      },
-  },
   plugins: {
     legend: {
-      position: "top",
       display: false,
     },
-    title: {
+  },
+
+  elements: {
+    line: {
+      borderColor: "#000000",
+      borderWidth: 1,
+      tension: 0.2,
+    },
+    point: {
+      radius: 0,
+    },
+  },
+  tooltips: {
+    enabled: false,
+  },
+  scales: {
+    x: {
       display: false,
-      text: "Chart.js Line Chart",
+      grid: {
+        display: false,
+      },
+    },
+    y: {
+      display: false,
+
+      grid: {
+        display: false,
+      },
     },
   },
 };
@@ -64,17 +66,17 @@ export const data = {
   labels,
   datasets: [
     {
-      label: "Dataset 2",
-      data: labels.map(() => faker.datatype.number({ min: 120, max: 180 })),
-      borderColor: "rgb(216 180 254)",
-      backgroundColor: "black",
+      label: "",
+      data: labels.map(() => faker.datatype.number({ min: 100, max: 200 })),
+      borderRadius: Number.MAX_VALUE,
+      borderSkipped: true,
     },
   ],
 };
 
 export default function TransactionChart() {
   return (
-    <div className=" my-8">
+    <div className="w-40 px-4">
       <Line options={options} data={data} />
     </div>
   );

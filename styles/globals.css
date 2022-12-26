@@ -29,8 +29,8 @@ a {
   @apply rounded-xl;
 }
 
-.main_header_page {
-  @apply font-bold text-3xl;
+.main-header-page {
+  @apply font-semibold text-xl py-2 mb-4 tracking-widest;
 }
 
 
@@ -56,11 +56,20 @@ html {
   color-scheme: var(color-scheme);
 }
 
+
 .MuiDataGrid-root,
-.MuiDataGrid-root .MuiDataGrid-columnHeader,
-.MuiDataGrid-root .MuiDataGrid-cell {
-  border: none !important;
+.MuiDataGrid-root .MuiDataGrid-columnHeader
+ {
+  border: 0  !important;
   outline: none !important;
+}
+.MuiDataGrid-columnHeader{
+  @apply text-black text-opacity-40 font-bold !important;
+}
+
+.MuiDataGrid-root .MuiDataGrid-cell{
+  border-bottom: 1;
+  @apply border-gray-100 
 }
 
 .MuiDataGrid-columnSeparator {

@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
+  images: {
+    domains: ["cdn-icons-png.flaticon.com"],
+  },
   reactStrictMode: true,
   swcMinify: true,
-}
+};
 
-module.exports = nextConfig
+// module.exports = nextConfig;

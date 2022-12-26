@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       .find({ name: { $regex: filter ?? "", $options: "i" }, isDeleted: false })
       .toArray();
 
-    return res.status(201).json(categories);
+    return res.status(200).json(categories);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "An error has occurred", errors: error });

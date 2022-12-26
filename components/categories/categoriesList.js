@@ -11,6 +11,8 @@ import {
   TextField,
 } from "@mui/material";
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
 import {
   BsArrow90DegUp,
@@ -20,6 +22,7 @@ import {
   BsArrowUpRight,
   BsBank,
   BsFillArrowUpRightSquareFill,
+  BsFilter,
   BsPen,
   BsPlus,
   BsPlusSquareFill,
@@ -66,6 +69,7 @@ export default function CategoriesList({
       minWidth: 100,
       flex: 1,
       headerName: "Id",
+      hide: true,
     },
     {
       field: "Name",
@@ -74,11 +78,14 @@ export default function CategoriesList({
       headerName: "Name",
       renderCell: (cells) => {
         return (
-          <div className="flex space-x-4 items-center">
-            <div className="bg-black p-3 rounded-full">
+          <div className="flex flex-col">
+            {/* <div className="bg-black p-3 rounded-full">
               <BsBank className="text-sm text-white" />
-            </div>
+            </div> */}
             <span className="font-semibold">{cells.row.name} </span>
+            <span className="text-black text-opacity-40 text-xs">
+              {/* {cells.row.category.name}{" "} */}
+            </span>
           </div>
         );
       },
@@ -149,103 +156,60 @@ export default function CategoriesList({
     },
   ];
 
-  // const handleConfirmForm = async () => {
-  //   try {
-  //     setConfirmOpen(true);
-
-  //     setAlertParams({
-  //       severity: "success",
-  //       title: "category deleted successfully",
-  //     });
-
-  //     setAlert(true);
-  //   } catch (error) {
-  //     setAlertParams({
-  //       severity: "error",
-  //       title: "Oops!, something went wrong, try later",
-  //     });
-  //     setAlert(true);
-  //   }
-  // };
-
-  // const CategoryRow = () => {
-  //   return (
-  //     <TableRow className=" bg-neutral-100 rounded-2xl my-2">
-  //       <TableCell className=" rounded-l-3xl">
-  //         {" "}
-  //         <div className="flex items-center space-x-4">
-  //           <div className="bg-black p-2 rounded-full">
-  //             <BsBank className="text-xs text-white" />
-  //           </div>
-  //           <span className="font-semibold text-xs">Grocery shop</span>
-  //         </div>
-  //       </TableCell>
-  //       <TableCell>
-  //         <span className="font-semibold text-xs opacity-40">Apr, 06 2022</span>
-  //       </TableCell>
-  //       <TableCell align="right">
-  //         <span className="flex font-semibold text-xs text-green-500 space-x-2">
-  //           <span>$5,000</span>
-  //           <BsArrowUpCircleFill />
-  //         </span>
-  //       </TableCell>
-  //       <TableCell className=" rounded-r-3xl border-spacing-8">
-  //         <div className="flex space-x-4">
-  //           <a
-  //             onClick={() => handleOnClickEdit(cells.row)}
-  //             className="text-purple-600 cursor-pointer"
-  //           >
-  //             <BsPen />
-  //           </a>
-  //           <a
-  //             onClick={() => handleOnClickDelete(cells.row)}
-  //             className="text-red-500 cursor-pointer"
-  //           >
-  //             <BsTrash />
-  //           </a>
-  //         </div>
-  //       </TableCell>
-  //     </TableRow>
-  //   );
-  // };
   const handleSearch = debounce((e) => onSearch(e.target.value));
   return (
     <div className="w-full">
-      <div className="w-full h-96  border-gray-100 rounded-xl">
-        <div className="flex justify-start md:justify-end items-center p-4">
-          <TextField
-            id="standard-basic"
-            size="small"
-            placeholder="search..."
-            className="mx-4 "
-            onChange={handleSearch}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start" className="mr-4">
-                  <BsSearch />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <BsPlusSquareFill
-            className=" text-4xl text-black"
-            onClick={onClickCreate}
-          />
+      <div className="w-full h-full border-gray-100 rounded-xl">
+        <div className="flex justify-between ">
+          <div>
+            <TextField
+              size="small"
+              placeholder="search..."
+              onChange={handleSearch}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start" className="mr-4">
+                    <BsSearch />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Button
+              size="small"
+              placeholder="Filter"
+              className="max-w-xs"
+              onChange={handleSearch}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start" className="mr-2">
+                    <BsFilter />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker
+              renderInput={(props) => (
+                <TextField {...props} size="small" className="sm:flex" />
+              )}
+            />
+          </LocalizationProvider> */}
         </div>
         <DataGrid
           className="rounded-xl"
           disableSelectionOnClick
           disableColumnFilter
+          autoHeight
           rows={data}
-          rowHeight={60}
+          rowHeight={40}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={10}
+          rowsPerPageOptions={[5, 10]}
           loading={false}
           getRowId={(row) => row._id}
           // components={{ Toolbar: SearchInput }}
         />
-
         {/* <Table>
           <TableHead>
             <TableRow>
@@ -263,7 +227,7 @@ export default function CategoriesList({
                 <CategoryRow className="bg-blue-100 border-2 border-black" />
               ))}
           </TableBody>
-        </Table> */}
+        </Table> */}{" "}
       </div>
       <Snackbar
         open={alert}

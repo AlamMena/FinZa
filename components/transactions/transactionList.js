@@ -124,18 +124,25 @@ export default function TransactionList({
       },
     },
     {
-      field: "data",
-      headerName: "",
-      width: 50,
+      flex: 1,
+      field: "Actions",
+      sortable: false,
       renderCell: (cells) => {
         return (
-          <>
-            <BsThreeDotsVertical
-              id="actions"
-              className="text-sm cursor-pointer"
-              onClick={(event) => handleClickPopOver(event, cells.row)}
-            />
-          </>
+          <div className="flex space-x-4 justify-end mx-2">
+            <a
+              onClick={() => handleOnClickEdit(cells.row)}
+              className="text-purple-600 cursor-pointer"
+            >
+              <BsPen />
+            </a>
+            <a
+              onClick={() => onDelete(cells.row)}
+              className="text-red-500 cursor-pointer"
+            >
+              <BsTrash />
+            </a>
+          </div>
         );
       },
     },
@@ -145,9 +152,8 @@ export default function TransactionList({
 
   return (
     <div className="w-full h-96">
-      <div className="flex md:justify-between items-center p-4">
-        <h3 className=" font-extrabold">Transactions</h3>
-        <Popover
+      <div className="flex md:justify-between items-center">
+        {/* <Popover
           id="actions"
           open={popOverIsOpen}
           onClose={() => setAnchorEl(null)}
@@ -179,13 +185,13 @@ export default function TransactionList({
               <span className="text-sm">Delete</span>
             </a>
           </div>
-        </Popover>
-        <div className="flex items-center">
+        </Popover> */}
+        <div className="flex items-center md:w-56 w-full">
           <TextField
             id="standard-basic"
             size="small"
             placeholder="search..."
-            className="mx-4 "
+            className="w-full"
             onChange={handleSearch}
             InputProps={{
               startAdornment: (
@@ -195,10 +201,10 @@ export default function TransactionList({
               ),
             }}
           />
-          <BsPlusSquareFill
+          {/* <BsPlusSquareFill
             onClick={onClickCreate}
             className=" text-3xl text-black"
-          />
+          /> */}
         </div>
       </div>
       <DataGrid

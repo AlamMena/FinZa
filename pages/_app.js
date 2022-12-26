@@ -21,16 +21,17 @@ function MyApp({ Component, pageProps }) {
   });
 
   const customTheme = createTheme({
+    typography: {
+      fontFamily: ["Varela round", "sans-serif"].join(","),
+      fontSize: 12,
+    },
     palette: {
       primary: {
         light: "#9333EA",
-        main: "#00000",
+        main: "#9333EA",
         dark: "#9333EA",
         contrastText: "#fff",
       },
-    },
-    typography: {
-      fontFamily: ["Varela round", "sans-serif"].join(","),
     },
     components: {
       MuiContainer: {
@@ -57,9 +58,9 @@ function MyApp({ Component, pageProps }) {
       <ThemeProvider theme={customTheme}>
         <StyledEngineProvider injectFirst>
           <PrivateRoute>
-            <div className="flex w-full ">
+            <div className="flex w-full">
               <SideBar />
-              <div className="lg:ml-60 md:ml-60 px-8 md:px-10 py-8 w-full space-y-2 ">
+              <div className="lg:ml-72 md:ml-72 px-8 md:px-10 py-8 w-full space-y-2 ">
                 <Component {...pageProps} />
                 <ToastContainer
                   toastStyle={{ fontFamily: "Varela round, sans-serif" }}

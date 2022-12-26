@@ -1,4 +1,4 @@
-import { InputAdornment, TextField } from "@mui/material";
+import { Button, InputAdornment, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import CategoryCard from "../components/categories/categoryCard";
@@ -8,6 +8,8 @@ import TransactionForm from "../components/transactions/transactionForm";
 import axios from "axios";
 import ConfirmDialog from "../components/globals/confirmDialog";
 import { toast } from "react-toastify";
+import TransactionCard from "../components/transactions/transactionCard";
+import TransactionChart from "../components/transactions/transactionChart";
 
 export default function Transactions() {
   // category list states
@@ -85,45 +87,53 @@ export default function Transactions() {
   }, [filter]);
 
   return (
-    <div className="grid grid-cols-12 gap-x-14">
-      <div className="col-span-12 md:col-span-8 ">
-        <h1 className=" font-extrabold my-0">Overview</h1>
-        <h3 className=" font-extrabold my-4">Accounts</h3>
-        <div className="flex justify-between overflow-x-auto space-x-4 my-4">
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
-        </div>
-        <div className={`hidden ${formOpen && "flex"}`}>
-          <TransactionForm
-            onSave={saveTransactionAsync}
-            searchCategoryAsync={searchCategoriesAsync}
-            open={formOpen}
-            data={formData}
-            setOpen={setFormOpen}
-          />
-        </div>
-        <ConfirmDialog
-          title="Do you want to delete this transaction?"
-          open={confirmOpen}
-          onCancel={() => setConfirmOpen(false)}
-          onConfirm={() => {
-            saveTransactionAsync(transactionToDelete);
-            setConfirmOpen(false);
-          }}
-        />
-        <TransactionList
-          isLoading={isLoading}
-          data={transactions}
-          onClickCreate={handleOnClickCreate}
-          onSearch={setFilter}
-          onDelete={handleDeleteTransaction}
-          setFormOpen={setFormOpen}
-          setFormData={setFormData}
+    <div className="flex flex-col">
+      <div className="flex items-center mb-10 w-full justify-between">
+        <h1 className="font-semibold text-xl py-2 tracking-widest">
+          Transactions
+        </h1>
+        <Button
+          variant="contained"
+          type="submit"
+          onClick={() => handleOnClickCreate()}
+          className="bg-purple-600 capitalize max-w-sm rounded-2xl hover:bg-black"
+        >
+          New transaction
+        </Button>
+      </div>
+      <div className="flex lg:space-y-0 space-y-4 lg:space-x-4 justify-center flex-wrap  overflow-x-auto mb-8 md:px-8">
+        <TransactionCard />
+        <TransactionCard />
+        <TransactionCard />
+      </div>
+      <div className={`hidden ${formOpen && "flex"}`}>
+        <TransactionForm
+          onSave={saveTransactionAsync}
+          searchCategoryAsync={searchCategoriesAsync}
+          open={formOpen}
+          data={formData}
+          setOpen={setFormOpen}
         />
       </div>
-      <div className=" col-span-12 md:col-span-4 flex flex-col ">
+      <ConfirmDialog
+        title="Do you want to delete this transaction?"
+        open={confirmOpen}
+        onCancel={() => setConfirmOpen(false)}
+        onConfirm={() => {
+          saveTransactionAsync(transactionToDelete);
+          setConfirmOpen(false);
+        }}
+      />
+      <TransactionList
+        isLoading={isLoading}
+        data={transactions}
+        onClickCreate={handleOnClickCreate}
+        onSearch={setFilter}
+        onDelete={handleDeleteTransaction}
+        setFormOpen={setFormOpen}
+        setFormData={setFormData}
+      />
+      {/* <div className=" col-span-12 md:col-span-4 flex flex-col ">
         <h1 className=" font-extrabold">Transafers</h1>
         <div className="flex justify-between my-4">
           <h3 className="font-extrabold">Scheduled</h3>
@@ -136,7 +146,7 @@ export default function Transactions() {
           <Transaction />
           <Transaction />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

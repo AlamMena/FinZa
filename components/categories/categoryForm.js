@@ -29,7 +29,7 @@ export default function CategoryFrom({ onSave, open, setOpen, data }) {
           onSubmit={handleSubmit(onSubmit)}
           className="md:w-96  flex flex-col p-8 space-y-4 px-10"
         >
-          <h1 className="font-semibold">New Category</h1>
+          <h1 className="font-semibold"> Category</h1>
 
           <FormControl>
             <TextField
@@ -37,6 +37,7 @@ export default function CategoryFrom({ onSave, open, setOpen, data }) {
               id="standard-basic"
               label="name"
               size="small"
+              helperText="write a name for your account"
               variant="outlined"
             />
           </FormControl>
@@ -47,6 +48,7 @@ export default function CategoryFrom({ onSave, open, setOpen, data }) {
               label="description"
               multiline
               minRows={5}
+              helperText="describe your account"
               variant="outlined"
             />
           </FormControl>
