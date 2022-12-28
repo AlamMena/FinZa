@@ -1,15 +1,16 @@
-import CategoriesList from "../components/categories/categoriesList";
+import AccountList from "../components/accounts/accountList";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CategoryFrom from "../components/categories/categoryForm";
+import AccountForm from "../components/accounts/accountForm";
 import { Button, LinearProgress, Tab, Tabs, Typography } from "@mui/material";
 import ConfirmDialog from "../components/globals/confirmDialog";
 import { Box } from "@mui/system";
+import { toast } from "react-toastify";
 
-export default function Categories() {
+export default function Accounts() {
   // category list states
   const [isLoading, setIsLoading] = useState(true);
-  const [categories, setCategories] = useState([]);
+  const [accounts, setAccounts] = useState([]);
 
   // tab states
   const [tabValue, setTabValue] = useState(0);
@@ -23,38 +24,41 @@ export default function Categories() {
 
   // confirm form
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [categoryToDelete, setCategoryToDelete] = useState();
+  const [accountToDelete, setAccountToDelete] = useState();
 
   // errors states
   const [errors, setError] = useState();
 
-  const getCategoriesAsync = async () => {
+  const getAccountsAsync = async () => {
     try {
-      const { data } = await axios.get(`/api/categories/get?filter=${filter}`);
-      setCategories(data);
+      const { data } = await axios.get(`/api/accounts/get?filter=${filter}`);
+      setAccounts(data);
       // alert(JSON.stringify(data));
     } catch (error) {
       setError(error);
     }
   };
 
-  const handleDeleteCategory = async (data) => {
+  const handleDeleteAccount = async (data) => {
     try {
       setConfirmOpen(true);
-      setCategoryToDelete({ ...data, isDeleted: true });
+      setAccountToDelete({ ...data, isDeleted: true });
     } catch (error) {
       setError(error);
     }
   };
 
-  const saveCategoryAsync = async (data) => {
+  const saveAccountAsync = async (data) => {
     try {
-      await axios.post("/api/categories/upsert", data);
-      await getCategoriesAsync();
+      await toast.promise(axios.post("/api/accounts/upsert", data), {
+        pending: "Loading",
+        success: "Success!",
+        error: "Oops!, something went wrong",
+      });
+      await getAccountsAsync();
     } catch (error) {
       const { response } = error;
       setError(response.data);
-      alert(JSON.stringify(response.data));
       return error;
     }
   };
@@ -96,7 +100,7 @@ export default function Categories() {
   }
 
   useEffect(() => {
-    getCategoriesAsync();
+    getAccountsAsync();
   }, [filter]);
 
   return (
@@ -114,8 +118,8 @@ export default function Categories() {
         </Button>
       </div>
 
-      <CategoryFrom
-        onSave={saveCategoryAsync}
+      <AccountForm
+        onSave={saveAccountAsync}
         open={formOpen}
         data={formData}
         setOpen={setFormOpen}
@@ -125,15 +129,15 @@ export default function Categories() {
         open={confirmOpen}
         onCancel={() => setConfirmOpen(false)}
         onConfirm={() => {
-          saveCategoryAsync(categoryToDelete);
+          saveAccountAsync(accountToDelete);
           setConfirmOpen(false);
         }}
       />
-      <CategoriesList
-        data={categories}
+      <AccountList
+        data={accounts}
         onClickCreate={handleOnClickCreate}
         onSearch={setFilter}
-        onDelete={handleDeleteCategory}
+        onDelete={handleDeleteAccount}
         setFormOpen={setFormOpen}
         setFormData={setFormData}
       />

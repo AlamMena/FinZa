@@ -1,18 +1,18 @@
-import {
-  BsBank,
-  BsFillArrowUpRightCircleFill,
-  BsStopwatch,
-  BsThreeDots,
-  BsThreeDotsVertical,
-  BsWatch,
-} from "react-icons/bs";
+// import {
+//   BsBank,
+//   BsFillArrowUpRightCircleFill,
+//   BsStopwatch,
+//   BsThreeDots,
+//   BsThreeDotsVertical,
+//   BsWatch,
+// } from "react-icons/bs";
 export default function Transaction() {
   return (
     <div className="">
       <div className="flex justify-between items-center space-x-4">
         <div className="flex items-center space-x-4">
           <div className="bg-black p-2 rounded-full">
-            <BsStopwatch className="text-sm text-white text-opacity-80" />
+            {/* <BsStopwatch className="text-sm text-white text-opacity-80" /> */}
           </div>
           <div className="flex flex-col space-y-1">
             <span className="font-semibold text-sm">Brooklyn simmons</span>

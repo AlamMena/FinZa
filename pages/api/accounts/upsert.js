@@ -11,19 +11,19 @@ export default async function handler(req, res) {
     await client.connect();
 
     const db = client.db("Finza");
-    const categories = db.collection("categories");
+    const accounts = db.collection("accounts");
 
     const { _id, name, description, isDeleted } = req.body;
 
-    const categoryExists = await categories.findOne({
+    const accountExists = await accounts.findOne({
       name: name,
       _id: { $ne: new ObjectId(_id) },
     });
 
-    if (categoryExists) {
+    if (accountExists) {
       return res
         .status(400)
-        .json({ message: "The category name is not avaliable" });
+        .json({ message: "The account name is not avaliable" });
     }
 
     let query = { _id: new ObjectId(_id) };
@@ -43,13 +43,13 @@ export default async function handler(req, res) {
     };
     let options = { upsert: true };
 
-    await categories.updateOne(query, set, options);
+    await accounts.updateOne(query, set, options);
 
     // closing connection
     await client.close();
 
     // response
-    return res.status(201).json({ message: "the category has been created" });
+    return res.status(201).json({ message: "the accoun has been created" });
   } catch (error) {
     console.log("error", error);
     return res.status(500).json({ message: error });

@@ -1,11 +1,3 @@
-import { FaHandPeace } from "react-icons/fa";
-import {
-  BsSearch,
-  BsBell,
-  BsFillSunFill,
-  BsFillMoonFill,
-} from "react-icons/bs";
-import { FcBusinessman } from "react-icons/fc";
 import Card from "../components/dashboard/card";
 import Transaction from "../components/transactions/transaction";
 import TransactionChart from "../components/transactions/transactionChart";

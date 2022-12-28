@@ -33,23 +33,23 @@ export default function TransactionForm({
   open,
   setOpen,
   data,
-  searchCategoryAsync,
+  searchAccountsAsync,
 }) {
   const { handleSubmit, register, reset, control } = useForm({
     defaultValues: data,
   });
-  const [categories, setCategories] = useState([]);
+  const [accounts, setAccounts] = useState([]);
 
   const onSubmit = async (data) => {
     setOpen(false);
     await onSave(data);
   };
 
-  const getCategoriesAsync = async (value) => {
-    let categories = await searchCategoryAsync(value);
-    setCategories(
-      categories.map((category) => {
-        return { _id: category._id, name: category.name };
+  const getAccountsAsync = async (value) => {
+    let accounts = await searchAccountsAsync(value);
+    setAccounts(
+      accounts.map((account) => {
+        return { _id: account._id, name: account.name };
       })
     );
   };
@@ -60,8 +60,8 @@ export default function TransactionForm({
     reset(data);
   }, [data]);
 
-  const handleSearchCategories = debounce((e) =>
-    getCategoriesAsync(e.target.value)
+  const handleSearchAccounts = debounce((e) =>
+    getAccountsAsync(e.target.value)
   );
 
   return (
@@ -136,7 +136,7 @@ export default function TransactionForm({
                 }) => (
                   <Autocomplete
                     {...field}
-                    options={categories}
+                    options={accounts}
                     disableClearable
                     onChange={(_, data) => {
                       onChange(data);
@@ -146,7 +146,7 @@ export default function TransactionForm({
                       <TextField
                         {...params}
                         error={error != undefined}
-                        onChange={handleSearchCategories}
+                        onChange={handleSearchAccounts}
                         inputRef={ref}
                         helperText={
                           error
@@ -154,13 +154,13 @@ export default function TransactionForm({
                             : "Find the account for your transaction"
                         }
                         size="small"
-                        label="Category"
+                        label="Account"
                         variant="outlined"
                       />
                     )}
                   />
                 )}
-                name="category"
+                name="account"
                 control={control}
               />
             </FormControl>
@@ -191,7 +191,7 @@ export default function TransactionForm({
               </FormControl>
               <FormControl fullWidth>
                 <TextField
-                  {...register("amount")}
+                  {...register("amount", { valueAsNumber: true })}
                   id="standard-basic"
                   type="number"
                   label="Amount"

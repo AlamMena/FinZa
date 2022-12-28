@@ -1,15 +1,13 @@
+import {
+  ArrowCircleUp,
+  DeleteOutline,
+  EditOutlined,
+  SearchOutlined,
+} from "@mui/icons-material";
 import { InputAdornment, Popover, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import {
-  BsArrowUp,
-  BsBank,
-  BsPen,
-  BsPlusSquareFill,
-  BsSearch,
-  BsThreeDotsVertical,
-  BsTrash,
-} from "react-icons/bs";
+
 import { debounce, formatCurrency, formatDate } from "../../Utils/utils";
 
 export default function TransactionList({
@@ -27,10 +25,10 @@ export default function TransactionList({
   const [anchorEl, setAnchorEl] = useState(null);
   const popOverIsOpen = Boolean(anchorEl);
 
-  const [selectedItem, setSelectedItem] = useState();
+  // const [selectedItem, setSelectedItem] = useState();
 
-  const handleOnClickEdit = () => {
-    setFormData(selectedItem);
+  const handleOnClickEdit = (data) => {
+    setFormData(data);
     setFormOpen(true);
   };
 
@@ -39,36 +37,6 @@ export default function TransactionList({
     setSelectedItem(value);
   };
 
-  // const data = [
-  //   {
-  //     _id: 1,
-  //     name: "Default",
-  //     date: "Aug 10 2022",
-  //     status: "pending",
-  //     amount: "200,12.10",
-  //   },
-  //   {
-  //     _id: 1,
-  //     name: "Default",
-  //     date: "Aug 10 2022",
-  //     status: "pending",
-  //     amount: "200,12.10",
-  //   },
-  //   {
-  //     _id: 1,
-  //     name: "Default",
-  //     date: "Aug 10 2022",
-  //     status: "pending",
-  //     amount: "200,12.10",
-  //   },
-  //   {
-  //     _id: 1,
-  //     name: "Default",
-  //     date: "Aug 10 2022",
-  //     status: "pending",
-  //     amount: "200,12.10",
-  //   },
-  // ];
   const columns = [
     {
       field: "_id",
@@ -77,16 +45,21 @@ export default function TransactionList({
     },
     {
       field: "title",
-      minWidth: 220,
+      minWidth: 250,
       flex: 1,
       headerName: "Transaction",
       renderCell: (cells) => {
         return (
           <div className="flex space-x-4 items-center">
             <div className="bg-black p-3 rounded-full">
-              <BsArrowUp className="text-sm text-white" />
+              <ArrowCircleUp className="text-sm text-white" />
             </div>
-            <span className="font-semibold">{cells.row.title} </span>
+            <div className="flex flex-col space-y-1">
+              <span className="text-black text-opacity-40">
+                {cells.row.title}{" "}
+              </span>
+              <span className="font-semibold">{cells.row.account.name} </span>
+            </div>
           </div>
         );
       },
@@ -134,13 +107,13 @@ export default function TransactionList({
               onClick={() => handleOnClickEdit(cells.row)}
               className="text-purple-600 cursor-pointer"
             >
-              <BsPen />
+              <EditOutlined />
             </a>
             <a
               onClick={() => onDelete(cells.row)}
               className="text-red-500 cursor-pointer"
             >
-              <BsTrash />
+              <DeleteOutline />
             </a>
           </div>
         );
@@ -196,7 +169,7 @@ export default function TransactionList({
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start" className="mr-4">
-                  <BsSearch />
+                  <SearchOutlined />
                 </InputAdornment>
               ),
             }}

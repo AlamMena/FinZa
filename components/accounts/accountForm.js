@@ -2,7 +2,7 @@ import { Button, Dialog, FormControl, TextField } from "@mui/material";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-export default function CategoryFrom({ onSave, open, setOpen, data }) {
+export default function AccountForm({ onSave, open, setOpen, data }) {
   const { handleSubmit, register, reset } = useForm({ defaultValues: data });
 
   const onSubmit = async (data) => {
@@ -29,7 +29,7 @@ export default function CategoryFrom({ onSave, open, setOpen, data }) {
           onSubmit={handleSubmit(onSubmit)}
           className="md:w-96  flex flex-col p-8 space-y-4 px-10"
         >
-          <h1 className="font-semibold"> Category</h1>
+          <h1 className="font-semibold">Account</h1>
 
           <FormControl>
             <TextField

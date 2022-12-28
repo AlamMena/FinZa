@@ -1,4 +1,10 @@
 import {
+  DeleteOutline,
+  EditOutlined,
+  Filter1Outlined,
+  SearchOutlined,
+} from "@mui/icons-material";
+import {
   Alert,
   Button,
   InputAdornment,
@@ -14,26 +20,10 @@ import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
-import {
-  BsArrow90DegUp,
-  BsArrowDown,
-  BsArrowUp,
-  BsArrowUpCircleFill,
-  BsArrowUpRight,
-  BsBank,
-  BsFillArrowUpRightSquareFill,
-  BsFilter,
-  BsPen,
-  BsPlus,
-  BsPlusSquareFill,
-  BsSearch,
-  BsSortDown,
-  BsThreeDotsVertical,
-  BsTrash,
-} from "react-icons/bs";
-import { debounce, formatCurrency } from "../../Utils/utils";
 
-export default function CategoriesList({
+import { debounce, formatCurrency, formatDate } from "../../Utils/utils";
+
+export default function AccountList({
   setFormOpen,
   setFormData,
   onSearch,
@@ -53,14 +43,14 @@ export default function CategoriesList({
     title: "",
   });
 
-  const handleOnClickEdit = (category) => {
-    setFormData(category);
+  const handleOnClickEdit = (account) => {
+    setFormData(account);
     setFormOpen(true);
   };
 
-  const handleOnClickDelete = (category) => {
+  const handleOnClickDelete = (account) => {
     setConfirmOpen(true);
-    setItemToDelete(category);
+    setItemToDelete(account);
   };
 
   const columns = [
@@ -96,29 +86,29 @@ export default function CategoriesList({
       headerName: "Last Transaction Date",
       minWidth: 200,
       renderCell: (cells) => {
-        return <span>Aug 20 2022 </span>;
+        return <span>{formatDate(cells.row.lastTransactionDate)} </span>;
       },
     },
     {
-      field: "profit",
+      field: "income",
       flex: 1,
-      headerName: "Profit",
+      headerName: "Income",
       renderCell: (cells) => {
         return (
           <span className="text-green-400">
-            {formatCurrency(cells.row.profit)}{" "}
+            {formatCurrency(cells.row.income)}{" "}
           </span>
         );
       },
     },
     {
       flex: 1,
-      field: "loss",
-      headerName: "Loss",
+      field: "outcome",
+      headerName: "Outcome",
       renderCell: (cells) => {
         return (
           <span className="text-red-400">
-            {formatCurrency(cells.row.loss)}{" "}
+            {formatCurrency(cells.row.outcome)}{" "}
           </span>
         );
       },
@@ -128,7 +118,7 @@ export default function CategoriesList({
       field: "balance",
       headerName: "Balance",
       renderCell: (cells) => {
-        return formatCurrency(cells.row.profit);
+        return formatCurrency(cells.row.balance);
       },
     },
     {
@@ -142,13 +132,13 @@ export default function CategoriesList({
               onClick={() => handleOnClickEdit(cells.row)}
               className="text-purple-600 cursor-pointer"
             >
-              <BsPen />
+              <EditOutlined />
             </a>
             <a
               onClick={() => onDelete(cells.row)}
               className="text-red-500 cursor-pointer"
             >
-              <BsTrash />
+              <DeleteOutline />
             </a>
           </div>
         );
@@ -169,7 +159,7 @@ export default function CategoriesList({
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start" className="mr-4">
-                    <BsSearch />
+                    <SearchOutlined />
                   </InputAdornment>
                 ),
               }}
@@ -182,7 +172,7 @@ export default function CategoriesList({
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start" className="mr-2">
-                    <BsFilter />
+                    <Filter1Outlined />
                   </InputAdornment>
                 ),
               }}

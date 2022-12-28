@@ -1,4 +1,4 @@
-import { BsBasket, BsCurrencyDollar } from "react-icons/bs";
+import { CurrencyBitcoin } from "@mui/icons-material";
 
 export default function CategoryCard({ name, description, icon }) {
   const colors = ["bg-blue-50", "bg-green-50", "bg-red-50", "bg-purple-50"];
@@ -9,7 +9,7 @@ export default function CategoryCard({ name, description, icon }) {
     >
       <div className="flex justify-between">
         <span className="font-bold text-xs">Amazon</span>
-        <BsCurrencyDollar className="text-2xl" />
+        <CurrencyBitcoin className="text-2xl" />
       </div>
       <div className="flex flex-col">
         <span className="font-bold">$920,100.12</span>

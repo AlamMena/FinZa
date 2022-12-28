@@ -13,26 +13,28 @@ export default async function get(req, res) {
       .collection("transactions")
       .aggregate([
         {
-          $match: {
-            title: { $regex: filter ?? "", $options: "i" },
-            isDeleted: false,
+          $lookup: {
+            from: "accounts",
+            localField: "accountId",
+            foreignField: "_id",
+            as: "account",
           },
         },
         {
-          $lookup: {
-            from: "categories",
-            localField: "categoryId",
-            foreignField: "_id",
-            as: "category",
+          $match: {
+            title: { $regex: filter ?? "", $options: "i" },
+            isDeleted: false,
+            "account.isDeleted": false,
           },
         },
         {
           $unwind: {
-            path: "$category",
+            path: "$account",
             preserveNullAndEmptyArrays: true,
           },
         },
       ])
+      .sort({ date: -1 })
       .toArray();
 
     return res.status(200).json(transactions);

@@ -1,5 +1,4 @@
 import { Button, Dialog } from "@mui/material";
-import { BsExclamationDiamond, BsExclamationDiamondFill } from "react-icons/bs";
 
 export default function ConfirmDialog(props) {
   const { title, description, type, open, onConfirm, onCancel } = props;
@@ -22,7 +21,7 @@ export default function ConfirmDialog(props) {
           <Button
             variant="contained"
             onClick={onConfirm}
-            className="bg-black capitalize rounded-2xl hover:bg-black"
+            className="bg-purple-600 capitalize rounded-2xl hover:bg-black"
           >
             Delete
           </Button>

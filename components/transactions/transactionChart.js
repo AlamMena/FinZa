@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -62,22 +62,23 @@ export const options = {
 
 const labels = ["January", "February", "March", "April", "May", "June", "July"];
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "",
-      data: labels.map(() => faker.datatype.number({ min: 100, max: 200 })),
-      borderRadius: Number.MAX_VALUE,
-      borderSkipped: true,
-    },
-  ],
-};
-
-export default function TransactionChart() {
+export default function TransactionChart({ transactions }) {
   return (
     <div className="w-40 px-4">
-      <Line options={options} data={data} />
+      <Line
+        options={options}
+        data={{
+          labels,
+          datasets: [
+            {
+              label: "",
+              data: transactions,
+              borderRadius: Number.MAX_VALUE,
+              borderSkipped: true,
+            },
+          ],
+        }}
+      />
     </div>
   );
 }

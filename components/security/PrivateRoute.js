@@ -4,34 +4,30 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Login from "../../pages/login";
 import { auth } from "../../Utils/firebaseApp";
+import Loading from "../globals/Loading";
 
-export default function PrivateRoute({ children }) {
+export default function PrivateRouter({ children }) {
+  // Router
+  const { pathname } = useRouter();
+  const [user, setUser] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    setIsLoading(false);
-    onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    onAuthStateChanged(auth, function (userCredential) {
+      if (userCredential) {
+        setUser(userCredential);
+      }
+      setIsLoading(false);
     });
-  }, []);
+  }, [user]);
 
-  const route = useRouter();
-  if (isLoading) {
-    return (
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    );
-  }
-  if (!isLoading && !user) {
+  if (user) {
+    if (pathname === "/login") {
+      return <Login />;
+    }
+    return children;
+  } else if (!user && !isLoading) {
     return <Login />;
   }
-  if (route.pathname == "login" && user) {
-    route.push("transactions");
-  }
-  if (!isLoading && user) return <>{children};</>;
+  return <Loading />;
 }

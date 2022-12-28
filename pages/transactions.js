@@ -1,7 +1,6 @@
 import { Button, InputAdornment, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { BsSearch } from "react-icons/bs";
-import CategoryCard from "../components/categories/categoryCard";
+import CategoryCard from "../components/accounts/accountCard";
 import TransactionList from "../components/transactions/transactionList";
 import Transaction from "../components/transactions/transaction";
 import TransactionForm from "../components/transactions/transactionForm";
@@ -12,6 +11,12 @@ import TransactionCard from "../components/transactions/transactionCard";
 import TransactionChart from "../components/transactions/transactionChart";
 
 export default function Transactions() {
+  // balance states
+  const [balance, setBalance] = useState({
+    total: { value: 0, transactions: [] },
+    income: { value: 0, transactions: [] },
+    outcome: { value: 0, transactions: [] },
+  });
   // category list states
   const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState([]);
@@ -21,7 +26,7 @@ export default function Transactions() {
 
   // form states
   const [formOpen, setFormOpen] = useState(false);
-  const [formData, setFormData] = useState();
+  const [formData, setFormData] = useState({});
 
   // confirm form
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -29,9 +34,9 @@ export default function Transactions() {
 
   // errors states
   const [errors, setError] = useState();
-  const searchCategoriesAsync = async (value) => {
+  const searchAccountsAsync = async (value) => {
     try {
-      const { data } = await axios.get(`/api/categories/get?filter=${value}`);
+      const { data } = await axios.get(`/api/accounts/get?filter=${value}`);
       return data;
     } catch (error) {
       setError(error);
@@ -43,6 +48,7 @@ export default function Transactions() {
       const { data } = await axios.get(
         `/api/transactions/get?filter=${filter}`
       );
+      await getBalance();
       setTransactions(data);
       setIsLoading(false);
     } catch (error) {
@@ -70,10 +76,16 @@ export default function Transactions() {
     );
     await toast.promise(savePromise, {
       pending: "Loading",
-      success: "Awsome!, action completed",
+      success: "Success!",
       error: "Oops!, something went wrong",
     });
     await getTransactionsAsync();
+  };
+
+  const getBalance = async () => {
+    const { data } = await axios.post("/api/transactions/getBalance");
+    console.log(data);
+    setBalance(data);
   };
 
   const handleOnClickCreate = () => {
@@ -102,14 +114,29 @@ export default function Transactions() {
         </Button>
       </div>
       <div className="flex lg:space-y-0 space-y-4 lg:space-x-4 justify-center flex-wrap  overflow-x-auto mb-8 md:px-8">
-        <TransactionCard />
-        <TransactionCard />
-        <TransactionCard />
+        <TransactionCard
+          title="Total"
+          value={balance.total.value}
+          transactions={balance.total.transactions}
+          diference={balance.total.monthDifference}
+        />
+        <TransactionCard
+          title="Iconme"
+          value={balance.income.value}
+          transactions={balance.income.transactions}
+          diference={balance.income.monthDifference}
+        />
+        <TransactionCard
+          title="outcome"
+          value={balance.outcome.value}
+          transactions={balance.outcome.transactions}
+          diference={balance.outcome.monthDifference}
+        />
       </div>
       <div className={`hidden ${formOpen && "flex"}`}>
         <TransactionForm
           onSave={saveTransactionAsync}
-          searchCategoryAsync={searchCategoriesAsync}
+          searchAccountsAsync={searchAccountsAsync}
           open={formOpen}
           data={formData}
           setOpen={setFormOpen}
