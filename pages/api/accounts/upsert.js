@@ -5,7 +5,7 @@ import { letterSpacing } from "@mui/system";
 import { ObjectId } from "mongodb";
 import { client } from "../database/database";
 
-export default async function handler(req, res) {
+export default async function Upsert(req, res) {
   try {
     // connecting to mongo
     await client.connect();

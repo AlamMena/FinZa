@@ -2,7 +2,7 @@
 
 import { client } from "./database/database";
 
-export default async function handler(req, res) {
+export default async function Get(req, res) {
   try {
     await client.connect();
     const mocvie = await db.collection("movies").findOne();

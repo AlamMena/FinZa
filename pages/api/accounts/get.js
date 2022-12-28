@@ -2,7 +2,7 @@
 
 import { client } from "../database/database";
 
-export default async function handler(req, res) {
+export default async function Get(req, res) {
   await client.connect();
   try {
     const db = client.db("Finza");
