@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import database from "./database/database.js";
+import database from "./database/client.js";
 
 export default async function Get(req, res) {
   try {

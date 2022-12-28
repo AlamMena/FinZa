@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import { original } from "@reduxjs/toolkit";
-import database from "../database/database";
+import database from "../database/client";
 
 export default async function getBalance(req, res) {
   await database.connect();

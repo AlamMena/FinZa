@@ -3,7 +3,7 @@
 // import { client, db } from "../Database/Database";
 import { letterSpacing } from "@mui/system";
 import { ObjectId } from "mongodb";
-import database from "../database/database";
+import database from "../database/client";
 
 export default async function upsert(req, res) {
   try {

@@ -1,4 +1,4 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 const uri = "mongodb://localhost:27017";
 // "mongodb+srv://Alam:Alam2701@cluster0.cf05i1x.mongodb.net/?retryWrites=true&w=majority";
-export default database = new MongoClient(uri);
+export default client = new MongoClient(uri);
