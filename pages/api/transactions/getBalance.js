@@ -1,12 +1,12 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import { original } from "@reduxjs/toolkit";
-import { client } from "../database/database";
+import database from "../database/database";
 
 export default async function getBalance(req, res) {
-  await client.connect();
+  await database.connect();
   try {
-    const db = client.db("Finza");
+    const db = database.db("Finza");
     var lastMonthDate = new Date();
     lastMonthDate.setDate(1);
     lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);

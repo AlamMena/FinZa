@@ -1,11 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import { client } from "../database/database";
+import database from "../database/database";
 
 export default async function get(req, res) {
   await client.connect();
   try {
-    const db = client.db("Finza");
+    const db = database.db("Finza");
 
     const { filter } = req.query;
 

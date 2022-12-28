@@ -3,14 +3,14 @@
 // import { client, db } from "../Database/Database";
 import { letterSpacing } from "@mui/system";
 import { ObjectId } from "mongodb";
-import { client } from "../database/database";
+import database from "../database/database";
 
 export default async function upsert(req, res) {
   try {
     // connecting to mongo
-    await client.connect();
+    await database.connect();
 
-    const db = client.db("Finza");
+    const db = database.db("Finza");
     const subcategories = db.collection("subcategories");
     const categories = db.collection("categories");
 

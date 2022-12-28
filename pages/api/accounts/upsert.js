@@ -3,14 +3,14 @@
 // import { client, db } from "../Database/Database";
 import { letterSpacing } from "@mui/system";
 import { ObjectId } from "mongodb";
-import { client } from "../database/database";
+import database from "../database/database";
 
 export default async function Upsert(req, res) {
   try {
     // connecting to mongo
-    await client.connect();
+    await database.connect();
 
-    const db = client.db("Finza");
+    const db = database.db("Finza");
     const accounts = db.collection("accounts");
 
     const { _id, name, description, isDeleted } = req.body;
@@ -46,7 +46,7 @@ export default async function Upsert(req, res) {
     await accounts.updateOne(query, set, options);
 
     // closing connection
-    await client.close();
+    await database.close();
 
     // response
     return res.status(201).json({ message: "the accoun has been created" });
