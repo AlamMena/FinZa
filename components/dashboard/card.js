@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function ({ type }) {
+export default function DashboardCard({ type }) {
   const [cardState, setCardState] = useState({});
 
   useEffect(() => {
