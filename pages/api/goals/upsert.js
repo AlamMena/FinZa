@@ -5,45 +5,46 @@ import { letterSpacing } from "@mui/system";
 import { ObjectId } from "mongodb";
 import database from "../database/client";
 
-export default async function upsert(req, res) {
+export default async function Upsert(req, res) {
   try {
     // connecting to mongo
     await database.connect();
 
     const db = database.db("Finza");
-    const transactions = db.collection("transactions");
-    const accounts = db.collection("accounts");
+    const goals = db.collection("goals");
 
     const {
       _id,
-      account,
-      sign,
       title,
       description,
       amount,
-      goals,
-      date,
+      initialDate,
+      finalDate,
       isDeleted,
     } = req.body;
 
-    const accountExists = await accounts.findOne({
-      _id: new ObjectId(account._id),
-      isDeleted: false,
+    const goalExists = await goals.findOne({
+      _id: { $ne: new ObjectId(_id) },
+      title: title,
+      description: description,
+      amount: amount,
     });
-    if (!accountExists) {
-      return res.status(400).send({ message: "Invalid account" });
-    }
-    let query = { _id: new ObjectId(_id) };
 
+    if (goalExists) {
+      return res
+        .status(400)
+        .json({ message: "The goal name is not avaliable" });
+    }
+
+    let query = { _id: new ObjectId(_id) };
+    console.log(initialDate);
     let set = {
       $set: {
         title: title,
-        accountId: new ObjectId(account._id),
-        date: date ? new Date(date) : new Date(),
+        initialDate,
+        finalDate,
         description: description,
         amount: amount,
-        goals,
-        sign: sign,
         isDeleted: isDeleted ?? false,
         updatedDate: new Date(),
       },
@@ -53,17 +54,15 @@ export default async function upsert(req, res) {
     };
     let options = { upsert: true };
 
-    await transactions.updateOne(query, set, options);
+    await goals.updateOne(query, set, options);
 
     // closing connection
     await database.close();
 
     // response
-    return res
-      .status(201)
-      .json({ message: "the subcategory has been created" });
+    return res.status(201).json({ message: "the goal has been created" });
   } catch (error) {
-    // console.log("error", error);
+    console.log("error", error);
     return res.status(500).json({ message: error });
   }
 }

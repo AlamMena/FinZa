@@ -42,6 +42,15 @@ export default function Transactions() {
       setError(error);
     }
   };
+  const searchGoalsAsync = async (value) => {
+    try {
+      const { data } = await axios.get(`/api/goals/get?filter=${value}`);
+      return data;
+    } catch (error) {
+      setError(error);
+    }
+  };
+
   const getTransactionsAsync = async () => {
     try {
       setIsLoading(true);
@@ -137,6 +146,7 @@ export default function Transactions() {
         <TransactionForm
           onSave={saveTransactionAsync}
           searchAccountsAsync={searchAccountsAsync}
+          searchGoalsAsync={searchGoalsAsync}
           open={formOpen}
           data={formData}
           setOpen={setFormOpen}

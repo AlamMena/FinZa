@@ -80,9 +80,11 @@ export default function TransactionList({
       renderCell: (cells) => {
         return (
           <div
-            className={`px-4 py-2 ${colors[random]} rounded-full text-xs font-bold`}
+            className={`px-4 py-2 ${
+              cells.row.sign === 1 ? "bg-green-50 " : "bg-red-100"
+            } rounded-full text-xs font-bold`}
           >
-            {cells.row.status}
+            {cells.row.sign === 1 ? "Income" : "Outcome"}
           </div>
         );
       },
@@ -102,7 +104,7 @@ export default function TransactionList({
       sortable: false,
       renderCell: (cells) => {
         return (
-          <div className="flex space-x-4 justify-end mx-2">
+          <div className="flex space-x-2 justify-end mx-2">
             <a
               onClick={() => handleOnClickEdit(cells.row)}
               className="text-purple-600 cursor-pointer"

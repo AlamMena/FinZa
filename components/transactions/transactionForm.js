@@ -34,15 +34,19 @@ export default function TransactionForm({
   setOpen,
   data,
   searchAccountsAsync,
+  searchGoalsAsync,
 }) {
   const { handleSubmit, register, reset, control } = useForm({
     defaultValues: data,
   });
   const [accounts, setAccounts] = useState([]);
+  const [goals, setGoals] = useState([]);
 
   const onSubmit = async (data) => {
-    setOpen(false);
     await onSave(data);
+    setOpen(false);
+
+    // alert(JSON.stringify(data));
   };
 
   const getAccountsAsync = async (value) => {
@@ -50,6 +54,15 @@ export default function TransactionForm({
     setAccounts(
       accounts.map((account) => {
         return { _id: account._id, name: account.name };
+      })
+    );
+  };
+
+  const getGoalsAsync = async (value) => {
+    let goals = await searchGoalsAsync(value);
+    setGoals(
+      goals.map((goal) => {
+        return { _id: goal._id, title: goal.title };
       })
     );
   };
@@ -63,6 +76,8 @@ export default function TransactionForm({
   const handleSearchAccounts = debounce((e) =>
     getAccountsAsync(e.target.value)
   );
+
+  const handleSearchGoals = debounce((e) => getGoalsAsync(e.target.value));
 
   return (
     <div>
@@ -161,6 +176,44 @@ export default function TransactionForm({
                   />
                 )}
                 name="account"
+                control={control}
+              />
+            </FormControl>
+            <FormControl fullWidth>
+              <Controller
+                rules={{ require: true }}
+                render={({
+                  field: { ref, onChange, ...field },
+                  fieldState: { error },
+                }) => (
+                  <Autocomplete
+                    {...field}
+                    multiple
+                    options={goals}
+                    disableClearable
+                    onChange={(_, data) => {
+                      onChange(data);
+                    }}
+                    getOptionLabel={(option) => option.title}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        error={error != undefined}
+                        onChange={handleSearchGoals}
+                        inputRef={ref}
+                        helperText={
+                          error
+                            ? "You must select an account"
+                            : "Find the account for your transaction"
+                        }
+                        size="small"
+                        label="Goals"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                )}
+                name="goals"
                 control={control}
               />
             </FormControl>

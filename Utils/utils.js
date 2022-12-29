@@ -10,7 +10,7 @@ const formatCurrency = (value) => {
 
 const formatDate = (date) => {
   dayjs.extend(customParseFormat);
-  return dayjs(date, "YYYY-MM-DD").format("MMM DD YYYY hh:mm:ss A");
+  return dayjs(date, "YYYY-MM-DD HH:mm:ss ").format("MMM DD YYYY HH:mm:ss");
 };
 
 function debounce(func, timeout = 300) {

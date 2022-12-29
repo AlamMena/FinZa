@@ -27,7 +27,7 @@ export default function AccountForm({ onSave, open, setOpen, data }) {
       >
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="md:w-96  flex flex-col p-8 space-y-4 px-10"
+          className="md:w-96  flex flex-col p-8 space-y-4 px-6"
         >
           <h1 className="font-semibold">Account</h1>
 

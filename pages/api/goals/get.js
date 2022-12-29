@@ -9,12 +9,12 @@ export default async function Get(req, res) {
 
     const { filter } = req.query;
 
-    const accounts = await db
-      .collection("accounts")
+    const goals = await db
+      .collection("goals")
       .aggregate([
         {
           $match: {
-            name: { $regex: filter ?? "", $options: "i" },
+            title: { $regex: filter ?? "", $options: "i" },
             isDeleted: false,
           },
         },
@@ -30,7 +30,10 @@ export default async function Get(req, res) {
         {
           $project: {
             _id: 1,
-            name: 1,
+            title: 1,
+            initialDate: 1,
+            finalDate: 1,
+            amount: 1,
             isDeleted: 1,
             transactions: 1,
           },
@@ -38,24 +41,21 @@ export default async function Get(req, res) {
       ])
       .toArray();
 
-    const response = accounts.map((account) => {
+    const response = goals.map((goal) => {
       return {
-        _id: account._id,
-        name: account.name,
-        lastTransactionDate:
-          account.transactions
+        _id: goal._id,
+        title: goal.title,
+        initialDate: goal.initialDate,
+        finalDate: goal.finalDate,
+        amount: goal.amount,
+        balance:
+          goal.transactions
             .filter((d) => d.isDeleted === false)
-            .map((d) => d.date)
-            .sort((a, b) => new Date(a) - new Date(b)) //sorting desc date
-            .slice(-1)[0] ?? new Date() /* getting last array value */,
-
-        balance: account.transactions
-          .filter((d) => d.isDeleted === false)
-          .reduce((prev, curr) => prev + curr.amount * curr.sign, 0),
-        income: account.transactions
+            .reduce((prev, curr) => prev + curr.amount * curr.sign, 0) ?? 0,
+        income: goal.transactions
           .filter((d) => d.sign === 1 && d.isDeleted === false)
           .reduce((prev, curr) => prev + curr.amount, 0),
-        outcome: account.transactions
+        outcome: goal.transactions
           .filter((d) => d.sign === -1 && d.isDeleted === false)
           .reduce((prev, curr) => prev + curr.amount, 0),
       };
