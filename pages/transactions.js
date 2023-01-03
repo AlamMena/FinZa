@@ -4,7 +4,7 @@ import CategoryCard from "../components/accounts/accountCard";
 import TransactionList from "../components/transactions/transactionList";
 import Transaction from "../components/transactions/transaction";
 import TransactionForm from "../components/transactions/transactionForm";
-import axios from "axios";
+import api from "../auth/api";
 import ConfirmDialog from "../components/globals/confirmDialog";
 import { toast } from "react-toastify";
 import TransactionCard from "../components/transactions/transactionCard";
@@ -36,7 +36,7 @@ export default function Transactions() {
   const [errors, setError] = useState();
   const searchAccountsAsync = async (value) => {
     try {
-      const { data } = await axios.get(`/api/accounts/get?filter=${value}`);
+      const { data } = await api.get(`/accounts/get?filter=${value}`);
       return data;
     } catch (error) {
       setError(error);
@@ -44,7 +44,7 @@ export default function Transactions() {
   };
   const searchGoalsAsync = async (value) => {
     try {
-      const { data } = await axios.get(`/api/goals/get?filter=${value}`);
+      const { data } = await api.get(`/goals/get?filter=${value}`);
       return data;
     } catch (error) {
       setError(error);
@@ -54,9 +54,7 @@ export default function Transactions() {
   const getTransactionsAsync = async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios.get(
-        `/api/transactions/get?filter=${filter}`
-      );
+      const { data } = await api.get(`/transactions/get?filter=${filter}`);
       await getBalance();
       setTransactions(data);
       setIsLoading(false);
@@ -76,12 +74,8 @@ export default function Transactions() {
   };
 
   const saveTransactionAsync = async (data) => {
-    // alert(isLoading);
     const savePromise = new Promise((resolve) =>
-      setTimeout(
-        () => resolve(axios.post("/api/transactions/upsert", data)),
-        1000
-      )
+      setTimeout(() => resolve(api.post("/transactions/upsert", data)), 1000)
     );
     await toast.promise(savePromise, {
       pending: "Loading",
@@ -92,7 +86,7 @@ export default function Transactions() {
   };
 
   const getBalance = async () => {
-    const { data } = await axios.post("/api/transactions/getBalance");
+    const { data } = await api.post("/transactions/getBalance");
     console.log(data);
     setBalance(data);
   };

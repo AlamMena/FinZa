@@ -8,7 +8,12 @@ import { InputAdornment, Popover, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 
-import { debounce, formatCurrency, formatDate } from "../../Utils/utils";
+import {
+  debounce,
+  formatCurrency,
+  formatDate,
+  formatDateWithHour,
+} from "../../utils/formatters";
 
 export default function TransactionList({
   setFormOpen,
@@ -70,7 +75,7 @@ export default function TransactionList({
       minWidth: 190,
       flex: 1,
       renderCell: (cells) => {
-        return <span>{formatDate(cells.row.date)}</span>;
+        return <span>{formatDateWithHour(cells.row.date)}</span>;
       },
     },
     {
@@ -92,7 +97,6 @@ export default function TransactionList({
     {
       field: "amount",
       minWidth: 150,
-      align: "end",
       headerName: "Amount",
       renderCell: (cells) => {
         return <span>{formatCurrency(cells.row.amount)}</span>;

@@ -1,5 +1,5 @@
 import { ArrowUpwardOutlined } from "@mui/icons-material";
-import { formatCurrency } from "../../Utils/utils";
+import { formatCurrency } from "../../utils/formatters";
 import TransactionChart from "./transactionChart";
 
 export default function TransactionCard({

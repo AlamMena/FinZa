@@ -1,6 +1,6 @@
 import { Button, FormControl, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { auth } from "../Utils/firebaseApp";
+import { auth } from "../auth/firebaseApp";
 import {
   createUserWithEmailAndPassword,
   getAuth,

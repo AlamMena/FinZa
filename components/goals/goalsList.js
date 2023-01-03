@@ -21,9 +21,9 @@ import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
 
-import { debounce, formatCurrency, formatDate } from "../../Utils/utils";
+import { debounce, formatCurrency, formatDate } from "../../utils/formatters";
 
-export default function AccountList({
+export default function GoalsList({
   setFormOpen,
   setFormData,
   onSearch,
@@ -80,10 +80,11 @@ export default function AccountList({
         );
       },
     },
+
     {
       field: "initialDate",
       headerName: "Initial date",
-      minWidth: 180,
+      minWidth: 120,
       flex: 1,
       renderCell: (cells) => {
         return <span>{formatDate(cells.row.initialDate)}</span>;
@@ -92,10 +93,27 @@ export default function AccountList({
     {
       field: "finalDate",
       headerName: "Final date",
-      minWidth: 190,
+      minWidth: 120,
       flex: 1,
       renderCell: (cells) => {
         return <span>{formatDate(cells.row.finalDate)}</span>;
+      },
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      minWidth: 120,
+      flex: 1,
+      renderCell: (cells) => {
+        return (
+          <div
+            className={`px-4 py-2 ${
+              cells.row.isCompleted ? "bg-green-100 " : "bg-red-100"
+            } rounded-full text-xs font-bold`}
+          >
+            {cells.row.isCompleted ? "Complete" : "Pending"}
+          </div>
+        );
       },
     },
     {
@@ -140,6 +158,7 @@ export default function AccountList({
         return formatCurrency(cells.row.amount);
       },
     },
+
     {
       flex: 1,
       field: "Actions",
@@ -176,7 +195,7 @@ export default function AccountList({
               size="small"
               placeholder="search..."
               onChange={handleSearch}
-              InputProps={{
+              inputProps={{
                 startAdornment: (
                   <InputAdornment position="start" className="mr-4">
                     <SearchOutlined />
@@ -184,7 +203,7 @@ export default function AccountList({
                 ),
               }}
             />
-            <Button
+            {/* <Button
               size="small"
               placeholder="Filter"
               className="max-w-xs"
@@ -196,7 +215,7 @@ export default function AccountList({
                   </InputAdornment>
                 ),
               }}
-            />
+            /> */}
           </div>
           {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker

@@ -8,6 +8,7 @@ import {
   GridViewOutlined,
   PaidOutlined,
   SummarizeOutlined,
+  TaskOutlined,
 } from "@mui/icons-material";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -63,9 +64,9 @@ export default function SideBar() {
           icon={<PaidOutlined className="text-white text-xl" />}
         />
         <SideBarItem
-          text="Reports"
-          href="reports"
-          icon={<SummarizeOutlined className="text-white text-xl" />}
+          text="Goals"
+          href="goals"
+          icon={<TaskOutlined className="text-white text-xl" />}
         />
         <div className="flex space-x-2 absolute bottom-10">
           <Image

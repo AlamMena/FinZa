@@ -21,7 +21,7 @@ import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
 
-import { debounce, formatCurrency, formatDate } from "../../Utils/utils";
+import { debounce, formatCurrency, formatDate } from "../../Utils/formatters";
 
 export default function AccountList({
   setFormOpen,

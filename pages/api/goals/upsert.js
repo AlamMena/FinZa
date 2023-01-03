@@ -4,10 +4,13 @@
 import { letterSpacing } from "@mui/system";
 import { ObjectId } from "mongodb";
 import database from "../database/client";
+import { getUser } from "../utils/auth";
+import { GetBalance } from "../utils/Balance";
 
 export default async function Upsert(req, res) {
   try {
-    // connecting to mongo
+    const user = await getUser(req, res);
+
     await database.connect();
 
     const db = database.db("Finza");
@@ -26,30 +29,44 @@ export default async function Upsert(req, res) {
     const goalExists = await goals.findOne({
       _id: { $ne: new ObjectId(_id) },
       title: title,
-      description: description,
-      amount: amount,
     });
 
     if (goalExists) {
       return res
         .status(400)
-        .json({ message: "The goal name is not avaliable" });
+        .json({ message: "The goal title is not avaliable" });
     }
 
     let query = { _id: new ObjectId(_id) };
-    console.log(initialDate);
+
+    let balance = {
+      income: 0,
+      outcome: 0,
+      balance: 0,
+    };
+    if (_id) {
+      const goal = await db
+        .collection("goals")
+        .findOne({ _id: new ObjectId(_id), isDeleted: false });
+
+      balance = GetBalance(goal.transactions);
+    }
     let set = {
       $set: {
+        uid: user.uid,
         title: title,
         initialDate,
         finalDate,
         description: description,
         amount: amount,
+        ...balance,
         isDeleted: isDeleted ?? false,
         updatedDate: new Date(),
+        uid: user.uid,
       },
       $setOnInsert: {
         creationDate: new Date(),
+        transactions: [],
       },
     };
     let options = { upsert: true };

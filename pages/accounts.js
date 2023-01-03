@@ -1,6 +1,6 @@
 import AccountList from "../components/accounts/accountList";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../auth/api";
 import AccountForm from "../components/accounts/accountForm";
 import { Button, LinearProgress, Tab, Tabs, Typography } from "@mui/material";
 import ConfirmDialog from "../components/globals/confirmDialog";
@@ -31,7 +31,7 @@ export default function Accounts() {
 
   const getAccountsAsync = async () => {
     try {
-      const { data } = await axios.get(`/api/accounts/get?filter=${filter}`);
+      const { data } = await api.get(`/accounts/get?filter=${filter}`);
       setAccounts(data);
       // alert(JSON.stringify(data));
     } catch (error) {
@@ -50,7 +50,7 @@ export default function Accounts() {
 
   const saveAccountAsync = async (data) => {
     try {
-      await toast.promise(axios.post("/api/accounts/upsert", data), {
+      await toast.promise(api.post("/accounts/upsert", data), {
         pending: "Loading",
         success: "Success!",
         error: "Oops!, something went wrong",

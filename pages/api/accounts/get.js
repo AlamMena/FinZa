@@ -1,11 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import client from "../database/client";
+import database from "../database/client";
+import { getUser } from "../utils/auth";
+import { GetBalance } from "../utils/Balance";
 
 export default async function Get(req, res) {
-  await client.connect();
   try {
-    const db = client.db("Finza");
+    const user = await getUser(req, res);
+
+    await database.connect();
+
+    const db = database.db("Finza");
 
     const { filter } = req.query;
 
@@ -16,6 +21,7 @@ export default async function Get(req, res) {
           $match: {
             name: { $regex: filter ?? "", $options: "i" },
             isDeleted: false,
+            uid: user.uid,
           },
         },
         {
@@ -31,6 +37,9 @@ export default async function Get(req, res) {
           $project: {
             _id: 1,
             name: 1,
+            income: 1,
+            outcome: 1,
+            balance: 1,
             isDeleted: 1,
             transactions: 1,
           },
@@ -42,22 +51,15 @@ export default async function Get(req, res) {
       return {
         _id: account._id,
         name: account.name,
+        income: account.income,
+        outcome: account.outcome,
+        balance: account.balance,
         lastTransactionDate:
           account.transactions
             .filter((d) => d.isDeleted === false)
             .map((d) => d.date)
             .sort((a, b) => new Date(a) - new Date(b)) //sorting desc date
             .slice(-1)[0] ?? new Date() /* getting last array value */,
-
-        balance: account.transactions
-          .filter((d) => d.isDeleted === false)
-          .reduce((prev, curr) => prev + curr.amount * curr.sign, 0),
-        income: account.transactions
-          .filter((d) => d.sign === 1 && d.isDeleted === false)
-          .reduce((prev, curr) => prev + curr.amount, 0),
-        outcome: account.transactions
-          .filter((d) => d.sign === -1 && d.isDeleted === false)
-          .reduce((prev, curr) => prev + curr.amount, 0),
       };
     });
     return res.status(200).json(response);
@@ -65,5 +67,5 @@ export default async function Get(req, res) {
     console.log(error);
     res.status(500).json({ message: "An error has occurred", errors: error });
   }
-  await client.close();
+  await database.close();
 }

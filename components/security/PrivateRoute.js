@@ -1,10 +1,10 @@
 import { onAuthStateChanged } from "@firebase/auth";
-import { Backdrop, CircularProgress } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Login from "../../pages/login";
-import { auth } from "../../Utils/firebaseApp";
+import { auth as fbAuth } from "../../auth/firebaseApp";
 import Loading from "../globals/Loading";
+import api from "../../auth/api";
 
 export default function PrivateRouter({ children }) {
   // Router
@@ -13,9 +13,11 @@ export default function PrivateRouter({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    onAuthStateChanged(auth, function (userCredential) {
+    onAuthStateChanged(fbAuth, function (userCredential) {
       if (userCredential) {
         setUser(userCredential);
+        console.log(userCredential);
+        api.defaults.headers.common["token"] = userCredential.accessToken;
       }
       setIsLoading(false);
     });

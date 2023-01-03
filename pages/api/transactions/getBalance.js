@@ -2,11 +2,16 @@
 
 import { original } from "@reduxjs/toolkit";
 import database from "../database/client";
+import { getUser } from "../utils/auth";
 
 export default async function getBalance(req, res) {
-  await database.connect();
   try {
+    const user = await getUser(req, res);
+
+    await database.connect();
+
     const db = database.db("Finza");
+
     var lastMonthDate = new Date();
     lastMonthDate.setDate(1);
     lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
@@ -35,6 +40,7 @@ export default async function getBalance(req, res) {
           $match: {
             isDeleted: false,
             "account.isDeleted": false,
+            uid: user.uid,
           },
         },
 
@@ -71,7 +77,10 @@ export default async function getBalance(req, res) {
 
     const lastMonthTransactions = await db
       .collection("transactions")
-      .find({ isDeleted: false })
+      .find({
+        isDeleted: false,
+        uid: user.uid,
+      })
       .project({ amount: 1, sign: 1 })
       .toArray();
 

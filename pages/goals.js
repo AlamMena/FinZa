@@ -1,6 +1,6 @@
 import GoalsList from "../components/goals/goalsList";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../auth/api";
 import GoalsForm from "../components/goals/goalsForm";
 import { Button, LinearProgress, Tab, Tabs, Typography } from "@mui/material";
 import ConfirmDialog from "../components/globals/confirmDialog";
@@ -30,7 +30,7 @@ export default function Goals() {
 
   const getGoalsAsync = async () => {
     try {
-      const { data } = await axios.get(`/api/goals/get?filter=${filter}`);
+      const { data } = await api.get(`/goals/get?filter=${filter}`);
       setGoals(data);
     } catch (error) {
       setError(error);
@@ -48,7 +48,7 @@ export default function Goals() {
 
   const saveGoalAsync = async (data) => {
     try {
-      await axios.post("/api/goals/upsert", data);
+      await api.post("/goals/upsert", data);
       await getGoalsAsync();
     } catch (error) {
       const { response } = error;

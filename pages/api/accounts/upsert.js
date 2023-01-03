@@ -4,10 +4,12 @@
 import { letterSpacing } from "@mui/system";
 import { ObjectId } from "mongodb";
 import database from "../database/client";
+import { getUser } from "../utils/auth";
+import { GetBalance } from "../utils/balance";
 
 export default async function Upsert(req, res) {
   try {
-    // connecting to mongo
+    const user = await getUser(req, res);
     await database.connect();
 
     const db = database.db("Finza");
@@ -18,6 +20,7 @@ export default async function Upsert(req, res) {
     const accountExists = await accounts.findOne({
       name: name,
       _id: { $ne: new ObjectId(_id) },
+      uid: user.uid,
     });
 
     if (accountExists) {
@@ -26,14 +29,20 @@ export default async function Upsert(req, res) {
         .json({ message: "The account name is not avaliable" });
     }
 
+    const transactions = await db
+      .collection("transactions")
+      .find({ accountId: new ObjectId(_id), uid: user.uid })
+      .toArray();
+
+    const balance = GetBalance(transactions);
+
     let query = { _id: new ObjectId(_id) };
     let set = {
       $set: {
+        uid: user.uid,
         name: name,
         description: description,
-        profit: 0,
-        loss: 0,
-        balance: 0,
+        ...balance,
         isDeleted: isDeleted ?? false,
         updatedDate: new Date(),
       },

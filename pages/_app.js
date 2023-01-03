@@ -12,7 +12,7 @@ import {
   ThemeProvider,
 } from "@mui/material/styles";
 import { ToastContainer } from "react-toastify";
-import PrivateRoute from "../components/security/PrivateRoute";
+import PrivateRoute from "../components/security/privateRoute";
 
 function MyApp({ Component, pageProps }) {
   const cache = createCache({
