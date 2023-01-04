@@ -45,8 +45,6 @@ export default function TransactionForm({
   const onSubmit = async (data) => {
     await onSave(data);
     setOpen(false);
-
-    // alert(JSON.stringify(data));
   };
 
   const getAccountsAsync = async (value) => {
@@ -99,7 +97,7 @@ export default function TransactionForm({
             <FormControl>
               <Controller
                 control={control}
-                name="payed"
+                name="recurrent"
                 render={({ field: { onChange, value, ...field } }) => (
                   <FormControlLabel
                     control={
@@ -112,7 +110,7 @@ export default function TransactionForm({
                         color="secondary"
                       />
                     }
-                    label="Payed"
+                    label="Recurrent"
                   />
                 )}
               ></Controller>

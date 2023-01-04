@@ -12,7 +12,14 @@ export default async function Get(req, res) {
 
     const db = database.db("Finza");
 
-    const { filter } = req.query;
+    const { filter, status } = req.query;
+
+    const statusCondition =
+      status === "all"
+        ? { isCompleted: { $in: [true, false] } }
+        : status === "completed"
+        ? { isCompleted: true }
+        : { isCompleted: false };
 
     const goals = await db
       .collection("goals")
@@ -20,13 +27,13 @@ export default async function Get(req, res) {
         {
           $match: {
             title: { $regex: filter ?? "", $options: "i" },
+            ...statusCondition,
             isDeleted: false,
             uid: user.uid,
           },
         },
       ])
       .toArray();
-
     return res.status(200).json(goals);
   } catch (error) {
     console.log(error);

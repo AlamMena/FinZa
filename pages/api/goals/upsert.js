@@ -5,7 +5,7 @@ import { letterSpacing } from "@mui/system";
 import { ObjectId } from "mongodb";
 import database from "../database/client";
 import { getUser } from "../utils/auth";
-import { GetBalance } from "../utils/Balance";
+import { GetBalance } from "../utils/balance";
 
 export default async function Upsert(req, res) {
   try {
@@ -51,6 +51,7 @@ export default async function Upsert(req, res) {
 
       balance = GetBalance(goal.transactions);
     }
+
     let set = {
       $set: {
         uid: user.uid,
@@ -60,6 +61,7 @@ export default async function Upsert(req, res) {
         description: description,
         amount: amount,
         ...balance,
+        isCompleted: amount < balance.balance,
         isDeleted: isDeleted ?? false,
         updatedDate: new Date(),
         uid: user.uid,

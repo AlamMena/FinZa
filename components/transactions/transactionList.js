@@ -56,9 +56,6 @@ export default function TransactionList({
       renderCell: (cells) => {
         return (
           <div className="flex space-x-4 items-center">
-            <div className="bg-black p-3 rounded-full">
-              <ArrowCircleUp className="text-sm text-white" />
-            </div>
             <div className="flex flex-col space-y-1">
               <span className="text-black text-opacity-40">
                 {cells.row.title}{" "}
@@ -191,7 +188,6 @@ export default function TransactionList({
         disableSelectionOnClick
         disableColumnFilter
         rows={data}
-        rowHeight={65}
         columns={columns}
         pageSize={4}
         rowsPerPageOptions={[4]}

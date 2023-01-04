@@ -6,6 +6,7 @@ import { ObjectId } from "mongodb";
 import database from "../database/client";
 import { getUser } from "../utils/auth";
 import { GetBalance } from "../utils/balance";
+import getBalance from "./getBalance";
 
 export default async function upsert(req, res) {
   try {
@@ -18,7 +19,7 @@ export default async function upsert(req, res) {
     const accounts = db.collection("accounts");
     const goals = db.collection("goals");
 
-    const {
+    let {
       _id,
       account,
       sign,
@@ -30,12 +31,12 @@ export default async function upsert(req, res) {
       isDeleted,
     } = req.body;
 
-    const accountExists = await accounts.findOne({
+    account = await accounts.findOne({
       _id: new ObjectId(account._id),
       isDeleted: false,
     });
 
-    if (!accountExists) {
+    if (!account) {
       return res.status(400).send({ message: "Invalid account" });
     }
     let query = { _id: new ObjectId(_id) };
@@ -47,7 +48,7 @@ export default async function upsert(req, res) {
       date: date ? new Date(date) : new Date(),
       description: description,
       amount: amount,
-      goals: transactionGoals,
+      goals: transactionGoals ?? [],
       sign: sign,
       isDeleted: isDeleted ?? false,
       updatedDate: new Date(),
@@ -62,6 +63,25 @@ export default async function upsert(req, res) {
     let options = { upsert: true };
 
     await transactions.updateOne(query, setTransasction, options);
+    const accountTransactions = await db
+      .collection("transactions")
+      .find({
+        accountId: new ObjectId(account._id),
+        isDeleted: false,
+        uid: user.uid,
+      })
+      .toArray();
+
+    const accountBalance = GetBalance(accountTransactions);
+    console.log(accountBalance);
+    await db.collection("accounts").updateOne(
+      {
+        _id: new ObjectId(account._id),
+        isDeleted: false,
+        uid: user.uid,
+      },
+      { $set: { ...accountBalance } }
+    );
 
     const goalsToUpdate = await goals
       .find({

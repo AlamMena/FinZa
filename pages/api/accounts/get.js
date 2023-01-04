@@ -2,7 +2,7 @@
 
 import database from "../database/client";
 import { getUser } from "../utils/auth";
-import { GetBalance } from "../utils/Balance";
+import { GetBalance } from "../utils/balance";
 
 export default async function Get(req, res) {
   try {

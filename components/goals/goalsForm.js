@@ -89,8 +89,8 @@ export default function AccountForm({ onSave, open, setOpen, data }) {
                 size="small"
                 defaultValue={0}
                 variant="outlined"
-                InputProps={{
-                  startAdornment: (
+                inputProps={{
+                  startadornment: (
                     <InputAdornment position="start">$</InputAdornment>
                   ),
                 }}

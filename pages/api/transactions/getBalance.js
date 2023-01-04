@@ -110,7 +110,7 @@ export default async function getBalance(req, res) {
     console.log(error);
     res.status(500).json({ message: "An error has occurred", errors: error });
   }
-  await client.close();
+  await database.close();
 }
 
 [

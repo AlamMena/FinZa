@@ -27,7 +27,20 @@ export default async function Get(req, res) {
       ])
       .toArray();
 
-    return res.status(200).json(goals);
+    const completedGoals =
+      goals.filter((goal) => goal.isCompleted)?.length ?? 0;
+    const pendingGoals = goals.filter((goal) => !goal.isCompleted)?.length ?? 0;
+
+    const response = {
+      completed: completedGoals,
+      pending: pendingGoals,
+      all: goals.length,
+      statusPercentage:
+        goals.length === 0 || goals.length === completedGoals
+          ? 100
+          : ((completedGoals / goals.length) * 100).toFixed(2),
+    };
+    return res.status(200).json(response);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "An error has occurred", errors: error });

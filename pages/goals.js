@@ -5,17 +5,24 @@ import GoalsForm from "../components/goals/goalsForm";
 import { Button, LinearProgress, Tab, Tabs, Typography } from "@mui/material";
 import ConfirmDialog from "../components/globals/confirmDialog";
 import { Box } from "@mui/system";
+import { toast } from "react-toastify";
 
 export default function Goals() {
-  // goals list states
+  // goals states
   const [isLoading, setIsLoading] = useState(true);
   const [goals, setGoals] = useState([]);
+  const [goalsStatus, setGoalsStatus] = useState({
+    completed: 0,
+    pending: 0,
+    all: 0,
+    statusPercentage: "100",
+  });
 
   // tab states
   const [tabValue, setTabValue] = useState(0);
 
   // filters
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState({ value: "", status: "all" });
 
   // form states
   const [formOpen, setFormOpen] = useState(false);
@@ -30,8 +37,23 @@ export default function Goals() {
 
   const getGoalsAsync = async () => {
     try {
-      const { data } = await api.get(`/goals/get?filter=${filter}`);
+      setIsLoading(true);
+      const { data } = await api.get(
+        `/goals/get?filter=${filter.value}&status=${filter.status}`
+      );
       setGoals(data);
+      await getGoalsStatusAsync();
+    } catch (error) {
+      setError(error);
+    }
+    setIsLoading(false);
+  };
+
+  const getGoalsStatusAsync = async () => {
+    try {
+      const { data } = await api.get(`/goals/status`);
+      setGoalsStatus(data);
+      console.log(data);
     } catch (error) {
       setError(error);
     }
@@ -48,7 +70,11 @@ export default function Goals() {
 
   const saveGoalAsync = async (data) => {
     try {
-      await api.post("/goals/upsert", data);
+      await toast.promise(api.post("/goals/upsert", data), {
+        success: "Goal saved!",
+        pending: "loading...",
+        error: "Oops, something went wrong",
+      });
       await getGoalsAsync();
     } catch (error) {
       const { response } = error;
@@ -66,12 +92,20 @@ export default function Goals() {
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
+    setFilter({
+      value: filter.value,
+      status: newValue === 0 ? "all" : newValue === 1 ? "pending" : "completed",
+    });
   };
 
   const handleOnClickCreate = () => {
     setFormOpen(true);
     setFormData({});
   };
+
+  useEffect(() => {
+    getGoalsAsync();
+  }, [filter]);
 
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -93,14 +127,10 @@ export default function Goals() {
     );
   }
 
-  useEffect(() => {
-    getGoalsAsync();
-  }, [filter]);
-
   return (
     <div>
       <div className="flex items-center mb-10 w-full justify-between">
-        <h1 className="font-semibold text-xl py-2 tracking-widest">Accounts</h1>
+        <h1 className="font-semibold text-xl py-2 tracking-widest">Goals</h1>
 
         <Button
           variant="contained"
@@ -116,14 +146,15 @@ export default function Goals() {
           <span className="text-black text-opacity-40 text-sm font-semibold">
             Total goals
           </span>
-          <span className="text-3xl font-semibold">1,700</span>
+          <span className="text-3xl font-semibold">{goalsStatus.all}</span>
         </div>
         <div className="flex flex-col space-y-4">
           <span className="text-black text-opacity-40 text-sm font-semibold">
             Completed
           </span>
           <span className="text-3xl font-semibold">
-            23<span className="text-green-400 text-xs mx-2">3 new</span>
+            {goalsStatus.completed}
+            <span className="text-green-400 text-xs mx-2">3 new</span>
           </span>
         </div>
         <div className="flex flex-col space-y-4">
@@ -131,7 +162,8 @@ export default function Goals() {
             Pending
           </span>
           <span className="text-3xl font-semibold">
-            43<span className="text-red-400 text-xs mx-2">5 new</span>
+            {goalsStatus.pending}
+            <span className="text-red-400 text-xs mx-2">5 new</span>
           </span>
         </div>
         <div className="flex flex-col w-full md:w-max md:mb-8 mb-8 space-y-2  ">
@@ -139,14 +171,16 @@ export default function Goals() {
             <span className="text-xs text-black text-opacity-40">
               Completion percentage
             </span>
-            <span className="text-xl font-semibold">70%</span>
+            <span className="text-xl font-semibold">
+              {goalsStatus.statusPercentage}%
+            </span>
           </div>
 
           <LinearProgress
             variant="determinate"
             className="w-full md:w-96 rounded-lg"
             color="primary"
-            value={50}
+            value={goalsStatus.statusPercentage}
           />
         </div>
       </div>
@@ -182,6 +216,7 @@ export default function Goals() {
         data={goals}
         onClickCreate={handleOnClickCreate}
         onSearch={setFilter}
+        isLoading={isLoading}
         onDelete={handleDeleteGoal}
         setFormOpen={setFormOpen}
         setFormData={setFormData}

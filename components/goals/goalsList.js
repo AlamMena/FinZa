@@ -4,21 +4,8 @@ import {
   Filter1Outlined,
   SearchOutlined,
 } from "@mui/icons-material";
-import {
-  Alert,
-  Button,
-  InputAdornment,
-  Snackbar,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TextField,
-} from "@mui/material";
-import { DataGrid, gridClasses } from "@mui/x-data-grid";
-import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Alert, InputAdornment, Snackbar, TextField } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 
 import { debounce, formatCurrency, formatDate } from "../../utils/formatters";
@@ -29,6 +16,7 @@ export default function GoalsList({
   onSearch,
   data,
   onDelete,
+  isLoading,
   onClickCreate,
 }) {
   // confirm dialog state
@@ -185,7 +173,9 @@ export default function GoalsList({
     },
   ];
 
-  const handleSearch = debounce((e) => onSearch(e.target.value));
+  const handleSearch = debounce((e) =>
+    onSearch({ value: e.target.value, status: "" })
+  );
   return (
     <div className="w-full">
       <div className="w-full h-full border-gray-100 rounded-xl">
@@ -196,34 +186,14 @@ export default function GoalsList({
               placeholder="search..."
               onChange={handleSearch}
               inputProps={{
-                startAdornment: (
+                startadornment: (
                   <InputAdornment position="start" className="mr-4">
                     <SearchOutlined />
                   </InputAdornment>
                 ),
               }}
             />
-            {/* <Button
-              size="small"
-              placeholder="Filter"
-              className="max-w-xs"
-              onChange={handleSearch}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start" className="mr-2">
-                    <Filter1Outlined />
-                  </InputAdornment>
-                ),
-              }}
-            /> */}
           </div>
-          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
-              renderInput={(props) => (
-                <TextField {...props} size="small" className="sm:flex" />
-              )}
-            />
-          </LocalizationProvider> */}
         </div>
         <DataGrid
           className="rounded-xl"
@@ -235,28 +205,10 @@ export default function GoalsList({
           columns={columns}
           pageSize={10}
           rowsPerPageOptions={[5, 10]}
-          loading={false}
+          loading={isLoading}
           getRowId={(row) => row._id}
           // components={{ Toolbar: SearchInput }}
         />
-        {/* <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell className=" font-semibold">Name</TableCell>
-              <TableCell className=" font-semibold">
-                Last Transaction Date
-              </TableCell>
-              <TableCell className=" font-semibold">Balance</TableCell>
-              <TableCell className=" font-semibold">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data &&
-              data.map((item) => (
-                <CategoryRow className="bg-blue-100 border-2 border-black" />
-              ))}
-          </TableBody>
-        </Table> */}{" "}
       </div>
       <Snackbar
         open={alert}
