@@ -16,7 +16,6 @@ export default function PrivateRouter({ children }) {
     onAuthStateChanged(fbAuth, function (userCredential) {
       if (userCredential) {
         setUser(userCredential);
-        console.log(userCredential);
         api.defaults.headers.common["token"] = userCredential.accessToken;
       }
       setIsLoading(false);

@@ -107,31 +107,6 @@ export default async function getBalance(req, res) {
     };
     return res.status(200).json(response);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "An error has occurred", errors: error });
   }
-  await database.close();
 }
-
-[
-  {
-    month: 1,
-    total: 100,
-    transactions: [
-      {
-        value: 1,
-        sign: 2,
-      },
-    ],
-  },
-  {
-    month: 1,
-    total: 100,
-    transactions: [
-      {
-        value: 1,
-        sign: 2,
-      },
-    ],
-  },
-];

@@ -116,24 +116,27 @@ export default function Transactions() {
           New transaction
         </Button>
       </div>
-      <div className="flex lg:space-y-0 space-y-4 lg:space-x-4 justify-center flex-wrap  overflow-x-auto mb-8 md:px-8">
+      <div className="flex lg:space-y-0 space-y-4 lg:space-x-4 justify-evenly flex-wrap  overflow-x-auto mb-8 ">
         <TransactionCard
           title="Total"
           value={balance.total.value}
           transactions={balance.total.transactions}
           diference={balance.total.monthDifference}
+          background={"bg-purple-50"}
         />
         <TransactionCard
           title="Iconme"
           value={balance.income.value}
           transactions={balance.income.transactions}
           diference={balance.income.monthDifference}
+          background={"bg-green-50"}
         />
         <TransactionCard
           title="outcome"
           value={balance.outcome.value}
           transactions={balance.outcome.transactions}
           diference={balance.outcome.monthDifference}
+          background={"bg-red-50"}
         />
       </div>
       <div className={`hidden ${formOpen && "flex"}`}>
@@ -155,15 +158,18 @@ export default function Transactions() {
           setConfirmOpen(false);
         }}
       />
-      <TransactionList
-        isLoading={isLoading}
-        data={transactions}
-        onClickCreate={handleOnClickCreate}
-        onSearch={setFilter}
-        onDelete={handleDeleteTransaction}
-        setFormOpen={setFormOpen}
-        setFormData={setFormData}
-      />
+      <div className="bg-white rounded-xl p-4">
+        <TransactionList
+          isLoading={isLoading}
+          data={transactions}
+          onClickCreate={handleOnClickCreate}
+          onSearch={setFilter}
+          onDelete={handleDeleteTransaction}
+          setFormOpen={setFormOpen}
+          setFormData={setFormData}
+        />
+      </div>
+
       {/* <div className=" col-span-12 md:col-span-4 flex flex-col ">
         <h1 className=" font-extrabold">Transafers</h1>
         <div className="flex justify-between my-4">

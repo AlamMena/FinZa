@@ -6,7 +6,6 @@ import { ObjectId } from "mongodb";
 import database from "../database/client";
 import { getUser } from "../utils/auth";
 import { GetBalance } from "../utils/balance";
-import getBalance from "./getBalance";
 
 export default async function upsert(req, res) {
   try {
@@ -120,16 +119,10 @@ export default async function upsert(req, res) {
       );
     }
 
-    // closing connection
-    await database.close();
-
-    // response
     return res
       .status(201)
       .json({ message: "the transaction has been created" });
   } catch (error) {
-    console.log("error", error);
-
     return res.status(500).json({ message: error });
   }
 }

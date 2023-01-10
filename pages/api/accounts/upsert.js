@@ -54,9 +54,6 @@ export default async function Upsert(req, res) {
 
     await accounts.updateOne(query, set, options);
 
-    // closing connection
-    await database.close();
-
     // response
     return res.status(201).json({ message: "the accoun has been created" });
   } catch (error) {

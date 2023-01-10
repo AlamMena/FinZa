@@ -189,8 +189,9 @@ export default function TransactionList({
         disableColumnFilter
         rows={data}
         columns={columns}
-        pageSize={4}
-        rowsPerPageOptions={[4]}
+        pageSize={5}
+        autoHeight
+        rowsPerPageOptions={[5]}
         loading={isLoading}
         getRowId={(row) => row._id}
         // components={{ Toolbar: SearchInput }}

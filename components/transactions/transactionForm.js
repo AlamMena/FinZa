@@ -94,28 +94,6 @@ export default function TransactionForm({
             <h1 className="font-semibold">Transaction</h1>
           </DialogTitle>
           <DialogContent className="space-y-4">
-            <FormControl>
-              <Controller
-                control={control}
-                name="recurrent"
-                render={({ field: { onChange, value, ...field } }) => (
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        {...field}
-                        onChange={onChange}
-                        value={value ?? true}
-                        defaultChecked
-                        size="small"
-                        color="secondary"
-                      />
-                    }
-                    label="Recurrent"
-                  />
-                )}
-              ></Controller>
-            </FormControl>
-
             <FormControl fullWidth>
               <Controller
                 control={control}

@@ -75,9 +75,6 @@ export default async function Upsert(req, res) {
 
     await goals.updateOne(query, set, options);
 
-    // closing connection
-    await database.close();
-
     // response
     return res.status(201).json({ message: "the goal has been created" });
   } catch (error) {

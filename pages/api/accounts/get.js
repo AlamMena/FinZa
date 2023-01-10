@@ -64,7 +64,6 @@ export default async function Get(req, res) {
     });
     return res.status(200).json(response);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "An error has occurred", errors: error });
   }
   await database.close();

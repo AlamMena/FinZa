@@ -42,8 +42,6 @@ export default async function get(req, res) {
       .sort({ date: -1 })
       .toArray();
 
-    await database.close();
-
     return res.status(200).json(transactions);
   } catch (error) {
     return res

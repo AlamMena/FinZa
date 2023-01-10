@@ -7,9 +7,12 @@ export default function TransactionCard({
   value,
   transactions,
   diference,
+  background,
 }) {
   return (
-    <div className=" md:w-80 w-full h-44 border-2 rounded-xl border-opacity-40 ">
+    <div
+      className={`md:w-80 w-full h-44 border-2 rounded-xl border-opacity-40 ${background}`}
+    >
       <div className=" justify-between flex p-4 items-center">
         <div className="flex flex-col space-y-2">
           <span className="text-black text-opacity-40 text-sm">{title}</span>
@@ -18,7 +21,7 @@ export default function TransactionCard({
           </span>
         </div>
         <div>
-          <div className=" flex space-x-2 items-center text-green-600 bg-green-50 font-bold border-green-600 border-2 px-4 py-2 rounded-3xl text-xs ">
+          <div className="flex space-x-2 items-center text-green-600 bg-green-50 font-bold border-green-600 border-2 px-4 py-2 rounded-3xl text-xs ">
             <ArrowUpwardOutlined className="text-xs" />
             <span
               data-hover="value"
