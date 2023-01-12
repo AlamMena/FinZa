@@ -57,13 +57,8 @@ export default function GoalsList({
       renderCell: (cells) => {
         return (
           <div className="flex flex-col">
-            {/* <div className="bg-black p-3 rounded-full">
-              <BsBank className="text-sm text-white" />
-            </div> */}
             <span className="font-semibold">{cells.row.title} </span>
-            <span className="text-black text-opacity-40 text-xs">
-              {/* {cells.row.category.name}{" "} */}
-            </span>
+            <span className="text-black text-opacity-40 text-xs"></span>
           </div>
         );
       },
@@ -207,7 +202,6 @@ export default function GoalsList({
           rowsPerPageOptions={[5, 10]}
           loading={isLoading}
           getRowId={(row) => row._id}
-          // components={{ Toolbar: SearchInput }}
         />
       </div>
       <Snackbar

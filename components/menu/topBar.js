@@ -1,12 +1,20 @@
-import { useState } from "react";
 import {
-  BsBell,
-  BsFillMoonFill,
-  BsFillSunFill,
-  BsSearch,
-} from "react-icons/bs";
-import { FaHandPeace } from "react-icons/fa";
-import { FcBusinessman } from "react-icons/fc";
+  DarkMode,
+  InboxOutlined,
+  LightMode,
+  NotificationsOutlined,
+  SearchOutlined,
+} from "@mui/icons-material";
+import Image from "next/image";
+import { useState } from "react";
+// import {
+//   BsBell,
+//   BsFillMoonFill,
+//   BsFillSunFill,
+//   BsSearch,
+// } from "react-icons/bs";
+// import { FaHandPeace } from "react-icons/fa";
+// import { FcBusinessman } from "react-icons/fc";
 
 export default function TopBar() {
   const [mode, setMode] = useState("light");
@@ -35,40 +43,21 @@ export default function TopBar() {
     }
   }
   return (
-    <div className="flex justify-between w-full">
+    <div className="flex justify-between w-full my-4">
       <div className="flex space-x-2 items-center">
-        {/* <h1 className="font-bold text-3xl">Hello, Jhon</h1>
-        <FaHandPeace className=" text-yellow-400 text-lg" /> */}
-        <BsSearch />
+        <h1 className="font-bold text-xl">Dashboard</h1>
       </div>
-      <div className="flex items-center right-0">
-        <div className="relative flex items-center">
-          <BsSearch className="md:absolute mx-4 ml-3 text-neutral-500" />
-          <input
-            className="hidden md:block py-2 px-10 bg-neutral-100 rounded-2xl"
-            placeholder="search ..."
+      <div className="  flex items-center  space-x-4 bg-slate-50">
+        <SearchOutlined className=" text-neutral-500" />
+        <InboxOutlined className="  text-neutral-500" />
+        <NotificationsOutlined className="  text-neutral-500" />
+        <div>
+          <Image
+            height={30}
+            width={30}
+            src={"https://cdn-icons-png.flaticon.com/512/1154/1154448.png"}
           />
         </div>
-        <BsBell className="mx-2 text-neutral-500" />
-        <FcBusinessman className="text-3xl mx-2" />
-        <label className="inline-flex relative items-center cursor-pointer">
-          <input
-            onClick={() => {
-              toggleDarkMode();
-            }}
-            type="checkbox"
-            value=""
-            id="default-toggle"
-            className="sr-only peer"
-          />
-          <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-            {mode !== "light" ? (
-              <BsFillSunFill className="text-yellow-500" />
-            ) : (
-              <BsFillMoonFill className="text-slate-800" />
-            )}
-          </span>
-        </label>
       </div>
     </div>
   );

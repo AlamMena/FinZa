@@ -13,6 +13,7 @@ import {
 } from "@mui/material/styles";
 import { ToastContainer } from "react-toastify";
 import PrivateRoute from "../components/security/privateRoute";
+import TopBar from "../components/menu/topBar";
 
 function MyApp({ Component, pageProps }) {
   const cache = createCache({
@@ -58,9 +59,10 @@ function MyApp({ Component, pageProps }) {
       <ThemeProvider theme={customTheme}>
         <StyledEngineProvider injectFirst>
           <PrivateRoute>
-            <div className="flex w-full">
+            <div className="flex w-full  ">
               <SideBar />
-              <div className=" lg:ml-72 md:ml-72 px-8 md:px-10 py-8 w-full space-y-2 ">
+              <div className="relative lg:ml-72 md:ml-72 px-8 md:p-0 md:pr-6 w-full mb-10">
+                <TopBar />
                 <Component {...pageProps} />
                 <ToastContainer
                   toastStyle={{ fontFamily: "Varela round, sans-serif" }}

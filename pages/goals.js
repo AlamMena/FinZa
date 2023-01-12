@@ -6,6 +6,7 @@ import { Button, LinearProgress, Tab, Tabs, Typography } from "@mui/material";
 import ConfirmDialog from "../components/globals/confirmDialog";
 import { Box } from "@mui/system";
 import { toast } from "react-toastify";
+import CardContainer from "../components/globals/CardContainer";
 
 export default function Goals() {
   // goals states
@@ -129,9 +130,8 @@ export default function Goals() {
 
   return (
     <div>
-      <div className="flex items-center mb-10 w-full justify-between">
+      <div className="flex items-center mb-10 w-full justify-between ">
         <h1 className="font-semibold text-xl py-2 tracking-widest">Goals</h1>
-
         <Button
           variant="contained"
           type="submit"
@@ -141,61 +141,51 @@ export default function Goals() {
           New goal
         </Button>
       </div>
-      <div className="flex justify-between md:w-full md:space-x-8 mb-8 flex-wrap-reverse">
-        <div className="flex flex-col space-y-4">
-          <span className="text-black text-opacity-40 text-sm font-semibold">
-            Total goals
-          </span>
-          <span className="text-3xl font-semibold">{goalsStatus.all}</span>
-        </div>
-        <div className="flex flex-col space-y-4">
-          <span className="text-black text-opacity-40 text-sm font-semibold">
-            Completed
-          </span>
-          <span className="text-3xl font-semibold">
-            {goalsStatus.completed}
-            <span className="text-green-400 text-xs mx-2">3 new</span>
-          </span>
-        </div>
-        <div className="flex flex-col space-y-4">
-          <span className="text-black text-opacity-40 text-sm font-semibold">
-            Pending
-          </span>
-          <span className="text-3xl font-semibold">
-            {goalsStatus.pending}
-            <span className="text-red-400 text-xs mx-2">5 new</span>
-          </span>
-        </div>
-        <div className="flex flex-col w-full md:w-max md:mb-8 mb-8 space-y-2  ">
-          <div className="flex justify-between">
-            <span className="text-xs text-black text-opacity-40">
-              Completion percentage
+      <CardContainer>
+        <div className="flex justify-between md:w-full md:space-x-8 mb-8 flex-wrap-reverse p-4">
+          <div className="flex flex-col space-y-4">
+            <span className="text-black text-opacity-40 text-sm font-semibold">
+              Total goals
             </span>
-            <span className="text-xl font-semibold">
-              {goalsStatus.statusPercentage}%
+            <span className="text-3xl font-semibold">{goalsStatus.all}</span>
+          </div>
+          <div className="flex flex-col space-y-4">
+            <span className="text-black text-opacity-40 text-sm font-semibold">
+              Completed
+            </span>
+            <span className="text-3xl font-semibold">
+              {goalsStatus.completed}
+              <span className="text-green-400 text-xs mx-2">3 new</span>
             </span>
           </div>
+          <div className="flex flex-col space-y-4">
+            <span className="text-black text-opacity-40 text-sm font-semibold">
+              Pending
+            </span>
+            <span className="text-3xl font-semibold">
+              {goalsStatus.pending}
+              <span className="text-red-400 text-xs mx-2">5 new</span>
+            </span>
+          </div>
+          <div className="flex flex-col w-full md:w-max md:mb-8 mb-8 space-y-2  ">
+            <div className="flex justify-between">
+              <span className="text-xs text-black text-opacity-40">
+                Completion percentage
+              </span>
+              <span className="text-xl font-semibold">
+                {goalsStatus.statusPercentage}%
+              </span>
+            </div>
 
-          <LinearProgress
-            variant="determinate"
-            className="w-full md:w-96 rounded-lg"
-            color="primary"
-            value={goalsStatus.statusPercentage}
-          />
+            <LinearProgress
+              variant="determinate"
+              className="w-full md:w-96 rounded-lg"
+              color="primary"
+              value={goalsStatus.statusPercentage}
+            />
+          </div>
         </div>
-      </div>
-
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={tabValue} onChange={handleTabChange} aria-label="tabs">
-          <Tab className=" capitalize" label="All" {...a11yProps(0)} />
-          <Tab className=" capitalize" label="Pending" {...a11yProps(1)} />
-          <Tab className=" capitalize" label="Completed" {...a11yProps(2)} />
-        </Tabs>
-      </Box>
-
-      <TabPanel value={tabValue} index={0}></TabPanel>
-      <TabPanel value={tabValue} index={1}></TabPanel>
-      <TabPanel value={tabValue} index={2}></TabPanel>
+      </CardContainer>
 
       <GoalsForm
         onSave={saveGoalAsync}
@@ -212,15 +202,29 @@ export default function Goals() {
           setConfirmOpen(false);
         }}
       />
-      <GoalsList
-        data={goals}
-        onClickCreate={handleOnClickCreate}
-        onSearch={setFilter}
-        isLoading={isLoading}
-        onDelete={handleDeleteGoal}
-        setFormOpen={setFormOpen}
-        setFormData={setFormData}
-      />
+
+      <CardContainer>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs value={tabValue} onChange={handleTabChange} aria-label="tabs">
+            <Tab className=" capitalize" label="All" {...a11yProps(0)} />
+            <Tab className=" capitalize" label="Pending" {...a11yProps(1)} />
+            <Tab className=" capitalize" label="Completed" {...a11yProps(2)} />
+          </Tabs>
+        </Box>
+
+        <TabPanel value={tabValue} index={0}></TabPanel>
+        <TabPanel value={tabValue} index={1}></TabPanel>
+        <TabPanel value={tabValue} index={2}></TabPanel>
+        <GoalsList
+          data={goals}
+          onClickCreate={handleOnClickCreate}
+          onSearch={setFilter}
+          isLoading={isLoading}
+          onDelete={handleDeleteGoal}
+          setFormOpen={setFormOpen}
+          setFormData={setFormData}
+        />
+      </CardContainer>
     </div>
   );
 }

@@ -78,6 +78,7 @@ export default function TransactionList({
     {
       field: "status",
       headerName: "Status",
+      minWidth: 200,
       flex: 1,
       renderCell: (cells) => {
         return (
@@ -103,6 +104,7 @@ export default function TransactionList({
       flex: 1,
       field: "Actions",
       sortable: false,
+      minWidth: 200,
       renderCell: (cells) => {
         return (
           <div className="flex space-x-2 justify-end mx-2">

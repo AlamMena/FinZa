@@ -8,6 +8,7 @@ body {
   margin: 0;
   box-sizing: border-box;
   font-family: "Varela Round", sans-serif !important;
+  @apply bg-slate-50 
 }
 
 a {
@@ -64,12 +65,12 @@ html {
   outline: none !important;
 }
 .MuiDataGrid-columnHeader{
-  @apply text-black text-opacity-40 font-bold !important;
+  @apply text-black text-opacity-40 font-bold  !important;
 }
 
 .MuiDataGrid-root .MuiDataGrid-cell{
-  border-bottom: 1;
-  @apply border-gray-100 
+  border-bottom: 0;
+  @apply border-white 
 }
 
 .MuiDataGrid-columnSeparator {
@@ -80,9 +81,6 @@ html {
   @apply rounded-lg !important;
 }
 
-.dataGrid-whitout-border .MuiDataGrid-columnHeaders {
-  @apply bg-slate-100 rounded-lg !important;
-}
 
 h1{
  @apply font-semibold text-xl 
