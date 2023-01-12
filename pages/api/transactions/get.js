@@ -11,7 +11,7 @@ export default async function get(req, res) {
 
     const db = database.db("Finza");
 
-    const { filter } = req.query;
+    const { filter, limit } = req.query;
 
     const transactions = await db
       .collection("transactions")
@@ -40,6 +40,7 @@ export default async function get(req, res) {
         },
       ])
       .sort({ date: -1 })
+      .limit(limit ? Number.parseInt(limit) : 999)
       .toArray();
 
     return res.status(200).json(transactions);

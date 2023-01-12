@@ -103,10 +103,7 @@ export default function Transactions() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center mb-10 w-full justify-between">
-        <h1 className="font-semibold text-xl py-2 tracking-widest">
-          Transactions
-        </h1>
+      <div className="flex items-center mb-10 w-full justify-end">
         <Button
           variant="contained"
           type="submit"

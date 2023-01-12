@@ -2,7 +2,7 @@ import Card from "../components/dashboard/card";
 import Transaction from "../components/transactions/transaction";
 import TransactionChart from "../components/transactions/transactionChart";
 import TransactionHistory from "../components/transactions/transactionHistory";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
@@ -24,9 +24,27 @@ import {
 import CardContainer from "../components/globals/CardContainer";
 import { DataGrid } from "@mui/x-data-grid";
 import { formatCurrency, formatDateWithHour } from "../utils/formatters";
-import { BrunchDiningOutlined } from "@mui/icons-material";
+import { Api, BrunchDiningOutlined } from "@mui/icons-material";
+import api from "../auth/api";
+import { Router, useRouter } from "next/router";
 
 export default function Home() {
+  const [transactions, setTransactions] = useState([]);
+  const [goals, setGoals] = useState([]);
+
+  const router = useRouter();
+
+  const getTransactionsAsync = async () => {
+    let filter = "";
+    const { data } = await api.get(
+      `/transactions/get?filter=${filter}&limit=4`
+    );
+    setTransactions(data);
+  };
+  const getGoalsAsync = async () => {
+    const { data } = await api.get("/goals/get?filter={null}");
+    setGoals(data);
+  };
   const columns = [
     {
       field: "_id",
@@ -102,6 +120,11 @@ export default function Home() {
       </div>
     );
   };
+
+  useEffect(() => {
+    getTransactionsAsync();
+    getGoalsAsync();
+  }, []);
   return (
     <div className=" grid grid-cols-12 gap-x-4">
       {/* <--------- left side -------->*/}
@@ -135,7 +158,12 @@ export default function Home() {
         </div>
         <div className="flex justify-between w-full text-sm px-4 py-2">
           <span className="font-bold">Your last goals</span>
-          <span className="text-black text-opacity-40">See all</span>
+          <span
+            className="text-black text-opacity-40 cursor-pointer"
+            onClick={() => router.push("/goals")}
+          >
+            See all
+          </span>
         </div>
         <div className="flex flex-wrap justify-evenly w-full">
           <CardGoal />
@@ -149,6 +177,7 @@ export default function Home() {
             <Button
               variant="contained"
               type="submit"
+              onClick={() => router.push("/transactions")}
               className="bg-purple-700 normal-case max-w-sm rounded-xl hover:bg-black px-8"
             >
               See all
@@ -182,7 +211,7 @@ export default function Home() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {[1, 2, 3].map((item, index) => {
+                {transactions.map((transaction, index) => {
                   return (
                     <TableRow className=" h-1" key={index}>
                       <TableCell>
@@ -194,12 +223,16 @@ export default function Home() {
                               src="https://cdn-icons-png.flaticon.com/512/2662/2662503.png"
                             />
                           </div>
-                          <span>Transaction name</span>
+                          <span>{transaction.title}</span>
                         </div>
                       </TableCell>
 
-                      <TableCell>2022-10-12</TableCell>
-                      <TableCell>$3200</TableCell>
+                      <TableCell>
+                        {formatDateWithHour(transaction.date)}
+                      </TableCell>
+                      <TableCell>
+                        {formatCurrency(transaction.amount)}
+                      </TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">
                           <div
@@ -253,7 +286,7 @@ export default function Home() {
                 See all
               </Button>
             </div>
-            {[1, 2, 3].map(() => {
+            {transactions.map((transaction) => {
               return (
                 <div className="flex flex-col bg-white  w-full">
                   <div className="flex items-center justify-between ">
@@ -267,15 +300,17 @@ export default function Home() {
                       </div>
 
                       <div className="flex flex-col ">
-                        <span className="text-sm">Transaction name</span>
+                        <span className="text-sm">{transaction.title}</span>
                         <span className="text-xs text-black text-opacity-30">
-                          Transaction with some
+                          {transaction.account.name}
                         </span>
                       </div>
                     </div>
 
                     <div>
-                      <span className="font-bold text-sm">$2000.32</span>
+                      <span className="font-bold text-sm">
+                        {formatCurrency(transaction.amount)}
+                      </span>
                     </div>
                   </div>
                 </div>

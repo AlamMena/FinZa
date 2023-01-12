@@ -6,6 +6,7 @@ import {
   SearchOutlined,
 } from "@mui/icons-material";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 // import {
 //   BsBell,
@@ -42,10 +43,13 @@ export default function TopBar() {
       }
     }
   }
+  const router = useRouter();
   return (
-    <div className="flex justify-between w-full my-4">
+    <div className="flex justify-between w-full mt-4 mb-8">
       <div className="flex space-x-2 items-center">
-        <h1 className="font-bold text-xl">Dashboard</h1>
+        <h1 className="font-bold text-xl capitalize">
+          {router.pathname.slice(1)}
+        </h1>
       </div>
       <div className="  flex items-center  space-x-4 bg-slate-50">
         <SearchOutlined className=" text-neutral-500" />

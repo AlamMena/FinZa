@@ -10,6 +10,7 @@ import {
   GridViewOutlined,
   HomeOutlined,
   PaidOutlined,
+  Router,
   SummarizeOutlined,
   TaskOutlined,
 } from "@mui/icons-material";
@@ -32,31 +33,36 @@ import { useRouter } from "next/router";
 // };
 
 export default function SideBar() {
-  const route = useRouter();
+  const router = useRouter();
+
   const SideBarItem = ({ icon, text, active, href }) => {
     return (
       <div
-        onClick={() => route.push(href)}
+        onClick={() => router.push(href)}
         className="w-full pl-4 flex justify-between items-center space-x-2 hover:font-bold rounded-xl cursor-pointer transition-all ease-in-out duration-200"
       >
         <div className="flex items-center space-x-3">
           <div
             className={`flex ${
-              active && "text-purple-500"
-            } rounded-xl my-2 justify-center `}
+              router.pathname.slice(1) === href
+                ? "text-purple-500"
+                : "text-black text-opacity-30"
+            } rounded-xl my-2 justify-center`}
           >
             {icon}
           </div>
           <p
             className={` ${
-              active ? "text-purple-500" : "text-black text-opacity-30"
+              router.pathname.slice(1) === href
+                ? "text-purple-500"
+                : "text-black text-opacity-30"
             } text-sm text-center font-bold`}
           >
             {text}
           </p>
         </div>
 
-        {active && (
+        {router.pathname.slice(1) === href && (
           <div className=" justify-self-end h-full bg-purple-600 w-[0.2rem] rounded-xl"></div>
         )}
       </div>
@@ -77,24 +83,22 @@ export default function SideBar() {
 
       {/* menu */}
       <div className="flex flex-col items-start space-y-4 ">
-        <SideBarItem text="Dashboard" href="/" icon={<AppsOutlined />} active />
+        <SideBarItem
+          text="Dashboard"
+          href="dashboard"
+          icon={<AppsOutlined />}
+        />
         <SideBarItem
           text="Accounts"
           href="accounts"
-          icon={
-            <AccountBalanceOutlined className="text-black text-opacity-30 text-xl" />
-          }
+          icon={<AccountBalanceOutlined />}
         />
         <SideBarItem
           text="Transactions"
           href="transactions"
-          icon={<PaidOutlined className="text-black text-opacity-30 text-xl" />}
+          icon={<PaidOutlined />}
         />
-        <SideBarItem
-          text="Goals"
-          href="goals"
-          icon={<TaskOutlined className="text-black text-opacity-30 text-xl" />}
-        />
+        <SideBarItem text="Goals" href="goals" icon={<TaskOutlined />} />
         <div className="flex w-full flex-col items-center space-x-2  absolute bottom-10">
           <Image height={140} width={140} src="/contactus.svg" />
           <div className="flex flex-col bg-purple-50 rounded-lg px-8 py-4 ">

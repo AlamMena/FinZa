@@ -107,8 +107,6 @@ export default function Accounts() {
   return (
     <div>
       <div className="flex items-center mb-10 w-full justify-between">
-        <h1 className="font-semibold text-xl py-2 tracking-widest">Accounts</h1>
-
         <Button
           variant="contained"
           type="submit"
