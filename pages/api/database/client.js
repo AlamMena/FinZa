@@ -3,4 +3,12 @@ const uri = "mongodb://localhost:27017";
 // const uri =
 //   "mongodb+srv://Alam:Alam2701@cluster0.cf05i1x.mongodb.net/?retryWrites=true&w=majority";
 
-export default new MongoClient(uri);
+let clientPromise;
+
+export default new MongoClient(
+  uri,
+  { useUnifiedTopology: true },
+  { useNewUrlParser: true },
+  { connectTimeoutMS: 30000 },
+  { keepAlive: 1 }
+);

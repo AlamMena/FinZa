@@ -14,6 +14,8 @@ export default async function Get(req, res) {
 
     const { filter, status } = req.query;
 
+    console.log("getting goals");
+
     const statusCondition =
       status === "all"
         ? { isCompleted: { $in: [true, false] } }
@@ -39,5 +41,4 @@ export default async function Get(req, res) {
     console.log(error);
     res.status(500).json({ message: "An error has occurred", errors: error });
   }
-  await database.close();
 }

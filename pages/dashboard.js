@@ -8,10 +8,14 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   DesktopDatePicker,
   LocalizationProvider,
+  PickersDay,
   StaticDatePicker,
 } from "@mui/x-date-pickers";
 import {
+  Badge,
   Button,
+  Grid,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -24,14 +28,19 @@ import {
 import CardContainer from "../components/globals/CardContainer";
 import { DataGrid } from "@mui/x-data-grid";
 import { formatCurrency, formatDateWithHour } from "../utils/formatters";
-import { Api, BrunchDiningOutlined } from "@mui/icons-material";
+import {
+  Api,
+  BrunchDiningOutlined,
+  WbSunnyOutlined,
+} from "@mui/icons-material";
 import api from "../auth/api";
 import { Router, useRouter } from "next/router";
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
   const [goals, setGoals] = useState([]);
-
+  const [value, setValue] = useState(new Date());
+  const [highlightDay, setHighlightDay] = useState(["1", "14", "20", "31"]);
   const router = useRouter();
 
   const getTransactionsAsync = async () => {
@@ -264,12 +273,33 @@ export default function Home() {
             <StaticDatePicker
               openTo="day"
               displayStaticWrapperAs="desktop"
-              // value={value}
-              // shouldDisableDate={isWeekend}
-              // onChange={(newValue) => {
-              //   setValue(newValue);
-              // }}
               renderInput={(params) => <TextField {...params} size="medium" />}
+              renderDay={(day, _value, DayComponentProps) => {
+                const todayString = `${day.toString()[5]}${day.toString()[6]}`;
+                const isSelected = highlightDay.find((d) => d === todayString);
+                return (
+                  <div className="flex flex-col items-center">
+                    <PickersDay
+                      {...DayComponentProps}
+                      className="flex flex-col"
+                    >
+                      {todayString}
+                      {isSelected && (
+                        <div className="flex space-x-1">
+                          <span className="w-1 bg-blue-300 rounded-full h-1"></span>
+                          <span className="w-1 bg-red-300 rounded-full h-1"></span>
+                          <span className="w-1 bg-purple-300 rounded-full h-1"></span>
+                        </div>
+                      )}
+                    </PickersDay>
+                  </div>
+                );
+              }}
+              value={value}
+              // shouldDisableDate={isWeekend}
+              onChange={(newValue) => {
+                setValue(newValue);
+              }}
             />
           </LocalizationProvider>
         </CardContainer>
