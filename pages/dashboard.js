@@ -1,7 +1,3 @@
-import Card from "../components/dashboard/card";
-import Transaction from "../components/transactions/transaction";
-import TransactionChart from "../components/transactions/transactionChart";
-import TransactionHistory from "../components/transactions/transactionHistory";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -25,7 +21,7 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
-import CardContainer from "../components/globals/CardContainer";
+import CardContainer from "../components/globals/cardContainer";
 import { DataGrid } from "@mui/x-data-grid";
 import { formatCurrency, formatDateWithHour } from "../utils/formatters";
 import {
