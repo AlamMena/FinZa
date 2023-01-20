@@ -316,9 +316,9 @@ export default function Home() {
                 See all
               </Button>
             </div>
-            {transactions.map((transaction) => {
+            {transactions.map((transaction, index) => {
               return (
-                <div className="flex flex-col bg-white  w-full">
+                <div className="flex flex-col bg-white  w-full" key={index}>
                   <div className="flex items-center justify-between ">
                     <div className="flex space-x-2 ">
                       <div className=" bg-green-100 py-2 px-2 rounded-xl">
