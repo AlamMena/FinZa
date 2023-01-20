@@ -6,7 +6,7 @@ import { auth as fbAuth } from "../../auth/firebaseApp";
 import Loading from "../globals/Loading";
 import api from "../../auth/api";
 
-export default function PrivateRouter({ children }) {
+export default function privateRoute({ children }) {
   // Router
   const { pathname } = useRouter();
   const [user, setUser] = useState();
