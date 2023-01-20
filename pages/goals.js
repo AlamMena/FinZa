@@ -6,7 +6,7 @@ import { Button, LinearProgress, Tab, Tabs, Typography } from "@mui/material";
 import ConfirmDialog from "../components/globals/confirmDialog";
 import { Box } from "@mui/system";
 import { toast } from "react-toastify";
-import CardContainer from "../components/globals/cardContainer";
+import CardContainer from "../components/globals/CardContainer";
 
 export default function Goals() {
   // goals states

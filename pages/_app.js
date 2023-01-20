@@ -12,7 +12,7 @@ import {
   ThemeProvider,
 } from "@mui/material/styles";
 import { ToastContainer } from "react-toastify";
-import PrivateRoute from "../components/security/privateRoute";
+import PrivateRoute from "../components/security/PrivateRoute";
 import TopBar from "../components/menu/topBar";
 
 function MyApp({ Component, pageProps }) {
