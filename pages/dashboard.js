@@ -21,7 +21,7 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
-import CardContainer from "../components/globals/cardContainer";
+import CardContainer from "../components/globals/CardContainer";
 import { DataGrid } from "@mui/x-data-grid";
 import { formatCurrency, formatDateWithHour } from "../utils/formatters";
 import {
